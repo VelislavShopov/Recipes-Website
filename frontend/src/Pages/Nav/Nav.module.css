@@ -1,0 +1,33 @@
+.nav {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.ul {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 5rem;
+}
+
+.links_div {
+  display: flex;
+  gap: 1rem;
+}
+
+.links_div a {
+  text-decoration: none;
+  color: black;
+  text-align: center;
+  align-content: center;
+  font-size: 1rem;
+}
+
+.links_div button {
+  background-color: white;
+  border: none;
+  font-size: 1rem;
+}
+
+.links_div button:hover {
+  cursor: pointer;
+}

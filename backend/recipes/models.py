@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
+from django.db.models import Avg
 
 from recipes.mixins import UserMixin, PublicationMixin
 
@@ -8,8 +9,11 @@ from recipes.mixins import UserMixin, PublicationMixin
 # Create your models here.
 class Recipe(UserMixin,PublicationMixin):
     name = models.CharField(max_length=100)
-    ingredients = models.ManyToManyField("Ingredient")
+    ingredients = models.ManyToManyField("Ingredient", blank=True)
     type_dish = models.CharField(max_length=50)
+    image = models.ImageField(upload_to="recipes/images/")
+
+    description = models.TextField()
 
     class TypeDishChoices(models.TextChoices):
         SALAD = "Salad"
@@ -17,11 +21,20 @@ class Recipe(UserMixin,PublicationMixin):
         DESSERT = "Dessert"
 
 
+    @property
+    def average_rating(self):
+        return self.ratings.aggregate(avg=Avg('rating'))['avg']
+
+    @property
+    def ratings_count(self):
+        return self.ratings.count()
+
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)
 
 
 class Rating(UserMixin,PublicationMixin):
-    stars = models.DecimalField(decimal_places=1, max_digits=1,validators=[MinValueValidator(0.0),MaxValueValidator(5.0)])
+    stars = models.DecimalField(decimal_places=1, max_digits=2,validators=[MinValueValidator(0.0),MaxValueValidator(5.0)])
     comment = models.TextField(blank=True,null=True)
-    recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE,related_name="ratings")
+

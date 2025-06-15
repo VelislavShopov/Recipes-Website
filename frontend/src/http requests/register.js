@@ -1,5 +1,6 @@
 import axios from "axios";
 import obtainToken from "./token";
+import { useAuth } from "../context/AuthContext";
 export default async function sendRegisterData(formData) {
   const user = {
     first_name: formData.get("first_name"),

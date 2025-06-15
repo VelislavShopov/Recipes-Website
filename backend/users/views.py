@@ -22,9 +22,8 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-class LoginApproveAPIView(APIView):
+class UserDataRetrieveView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         user = request.user
-        print(user)
-        return Response({'username': user.username})
+        return Response(CustomUserSerializer(user).data)

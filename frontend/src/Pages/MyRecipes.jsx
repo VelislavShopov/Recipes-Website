@@ -1,16 +1,21 @@
 import { Link, useLoaderData, useParams } from "react-router-dom";
 import { getMyRecipes } from "../http requests/recipes";
 import RecipesList from "../components/MyRecipesPage/RecipesList";
+import { useAuth } from "../context/AuthContext";
 
 export default function MyRecipes() {
-  const { auth } = useLoaderData();
-  console.log(auth);
+  const { user } = useAuth();
   const params = useParams();
-
+  console.log(user);
   return (
     <>
-      <h1>{auth ? "My" : `${params.username}'s`} Recipes</h1>
-      {auth && <Link to="/recipes/add">Add</Link>}
+      <h1>
+        {user.user.username === params.username ? "My" : `${params.username}'s`}{" "}
+        Recipes
+      </h1>
+      {user.user.username === params.username && (
+        <Link to="/recipes/add">Add</Link>
+      )}
 
       <RecipesList></RecipesList>
     </>

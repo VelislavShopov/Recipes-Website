@@ -13,6 +13,8 @@ import { loginAction } from "./Pages/Login";
 import { registerAction } from "./Pages/Register";
 import { myRecipesLoader } from "./Pages/MyRecipes";
 import { addRecipeLoader } from "./Pages/AddRecipe";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/Authorization/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -40,16 +42,25 @@ const router = createBrowserRouter([
         loader: myRecipesLoader,
       },
       {
-        path: "recipes/add",
-        element: <AddRecipe></AddRecipe>,
-        loader: addRecipeLoader,
+        element: <ProtectedRoute></ProtectedRoute>,
+        children: [
+          {
+            path: "recipes/add",
+            element: <AddRecipe></AddRecipe>,
+            loader: addRecipeLoader,
+          },
+        ],
       },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AuthProvider>
+  );
 }
 
 export default App;

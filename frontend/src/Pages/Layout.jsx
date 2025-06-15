@@ -3,14 +3,13 @@ import Nav from "./Nav/Nav";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setLoggedInThunk } from "../store/user-slice";
+import { useAuth } from "../context/AuthContext";
 export default function Layout() {
-  const dispatch = useDispatch();
+  const { loading } = useAuth();
 
-  useEffect(() => {
-    if (localStorage.getItem("token") !== null) {
-      dispatch(setLoggedInThunk(true));
-    }
-  }, []);
+  if (loading) {
+    return <></>;
+  }
 
   return (
     <>

@@ -2,14 +2,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoggedInThunk } from "../../store/user-slice";
 import classes from "./Nav.module.css";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Nav() {
   const isLoggedIn = useSelector((state) => state.user.loggedIn);
+  const { logout } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   function handleLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
+    logout();
     dispatch(setLoggedInThunk(false));
     navigate("/");
   }

@@ -1,17 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate, useNavigation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoggedInThunk } from "../../store/user-slice";
 import classes from "./Nav.module.css";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Nav() {
-  const isLoggedIn = useSelector((state) => state.user.loggedIn);
-  const { logout } = useAuth();
-  const dispatch = useDispatch();
+  const { logout, authData } = useAuth();
+
   const navigate = useNavigate();
+
   function handleLogout() {
     logout();
-    dispatch(setLoggedInThunk(false));
     navigate("/");
   }
 
@@ -24,8 +23,8 @@ export default function Nav() {
         <div className={classes.links_div}>
           <Link to="">Home</Link>
           <Link to="recipes">Recipes</Link>
-          {!isLoggedIn && <Link to="login">Login</Link>}
-          {isLoggedIn && (
+          {authData === null && <Link to="login">Login</Link>}
+          {authData && authData.isAuthenticated && (
             <>
               <Link to={`recipes/${localStorage.getItem("username")}`}>
                 My Recipes

@@ -1,5 +1,4 @@
 import { newestRecipes } from "../http requests/recipes";
-import { setNewestRecipes } from "../store/newest-recipes-slice";
 import { store } from "../store/store";
 
 import NewestRecipesSection from "../components/HomePage/NewestRecipesSection";
@@ -16,7 +15,6 @@ export default function Home() {
 
 export async function homeLoader({ request }) {
   const data = await newestRecipes();
-  store.dispatch(setNewestRecipes(data));
   console.log(data);
 
   return data;

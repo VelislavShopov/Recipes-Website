@@ -15,6 +15,7 @@ import { myRecipesLoader } from "./Pages/MyRecipes";
 import { addRecipeLoader } from "./Pages/AddRecipe";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/Authorization/ProtectedRoute";
+import AllRecipes, { AllRecipesLoader } from "./Pages/AllRecipes";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,11 @@ const router = createBrowserRouter([
         path: "recipes/:username",
         element: <MyRecipes></MyRecipes>,
         loader: myRecipesLoader,
+      },
+      {
+        path: "recipes/",
+        element: <AllRecipes></AllRecipes>,
+        loader: AllRecipesLoader,
       },
       {
         element: <ProtectedRoute></ProtectedRoute>,

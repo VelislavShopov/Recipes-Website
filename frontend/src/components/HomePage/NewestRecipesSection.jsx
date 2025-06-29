@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { useLoaderData } from "react-router-dom";
 
 export default function NewestRecipesSection() {
-  const recipes = useSelector((state) => state.newestRecipes);
+  const recipes = useLoaderData();
   console.log(recipes);
   return (
     <>

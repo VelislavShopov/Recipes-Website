@@ -1,11 +1,16 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import { useState } from "react";
 import { deleteRecipe } from "../../http requests/recipes";
+import { useAuth } from "../../context/AuthContext";
 
 export default function RecipesList() {
+  const params = useParams();
+  const { authData } = useAuth();
   const loaderData = useLoaderData();
-  const [recipes, setRecipes] = useState(loaderData.recipes);
-  const auth = loaderData.auth;
+  const [recipes, setRecipes] = useState(loaderData);
+  const auth = authData.user.username === params.username;
+  console.log(authData.user);
+  console.log(auth);
 
   function handleDeleteRecipe(recipeId) {
     deleteRecipe(recipeId);

@@ -1,6 +1,8 @@
 import axios from "axios";
 import obtainToken from "./token";
 import { useAuth } from "../context/AuthContext";
+import DEFAULT_URL from "./url";
+
 export default async function sendRegisterData(formData) {
   const user = {
     first_name: formData.get("first_name"),
@@ -11,18 +13,10 @@ export default async function sendRegisterData(formData) {
   };
 
   try {
-    const createResponse = await axios.post(
-      "http://localhost:8000/users/",
-      user
-    );
-
-    const token = await obtainToken({
-      username: user.username,
-      password: user.password,
-    });
-
-    localStorage.setItem("token", token.data.token);
+    const createResponse = await axios.post(`${DEFAULT_URL}/users/`, user);
+    return { isComplete: true };
   } catch (e) {
     console.log(e);
+    return { isComplete: false };
   }
 }

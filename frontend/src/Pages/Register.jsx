@@ -1,15 +1,30 @@
-import { Link, redirect, useFetcher } from "react-router-dom";
-import { Form } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  Form,
+  useFetcher,
+  useActionData,
+  useNavigation,
+} from "react-router-dom";
 import sendRegisterData from "../http requests/register";
-import { store } from "../store/store";
-import { setLoggedInThunk } from "../store/user-slice";
+import { useAuth } from "../context/AuthContext";
+
 export default function Register() {
-  const fetcher = useFetcher();
+  const actionData = useActionData();
+  const navigation = useNavigation();
+  const { login } = useAuth();
+
+  console.log(actionData);
+  console.log(actionData !== undefined);
+  if (actionData !== undefined && actionData.isComplete) {
+    login(actionData.user.username, actionData.user.password);
+    return <Navigate to="/"></Navigate>;
+  }
 
   return (
     <>
       <h1>Register</h1>
-      <fetcher.Form method="post">
+      <Form method="post">
         <div>
           <label>First Name:</label>
           <input name="first_name" required></input>
@@ -27,8 +42,8 @@ export default function Register() {
           <input name="password" type="password"></input>
         </div>
         <button type="submit">Register</button>
-      </fetcher.Form>
-      {fetcher.state !== "idle" && <p>Logging in.....</p>}
+      </Form>
+      {navigation.state === "submitting" && <p>Logging in.....</p>}
       <Link to="/login/">Login?</Link>
     </>
   );
@@ -36,7 +51,13 @@ export default function Register() {
 
 export async function registerAction({ request }) {
   const formData = await request.formData();
-  await sendRegisterData(formData);
-  store.dispatch(setLoggedInThunk(true));
-  return redirect("/");
+  const response = await sendRegisterData(formData);
+  console.log(response);
+  return {
+    isComplete: response.isComplete,
+    user: {
+      username: formData.get("username"),
+      password: formData.get("password"),
+    },
+  };
 }

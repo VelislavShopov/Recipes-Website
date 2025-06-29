@@ -1,4 +1,5 @@
 from rest_framework import viewsets, status
+from rest_framework.decorators import permission_classes
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -8,8 +9,6 @@ from .utils import get_best_recipes
 
 
 # Create your views here.
-
-
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
@@ -21,6 +20,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         if request.user.pk != instance.user.pk:
             return Response(status=status.HTTP_403_FORBIDDEN)
+
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -41,19 +41,7 @@ class UserRecipeProfileListView(ListAPIView):
     serializer_class = RecipeShortSerializer
 
     def get_queryset(self):
-        print(self.kwargs['username'])
         return Recipe.objects.filter(user__username=self.kwargs['username'])
 
-    def get(self,request,*args,**kwargs):
-        response = super().get(request,*args,**kwargs)
-        new_response_data = {
-            'recipes': response.data,
-            'auth': False
-        }
-        if self.request.user.username == self.kwargs['username']:
-            new_response_data['auth'] = True
-        response.data = new_response_data
-
-        return response
 
 

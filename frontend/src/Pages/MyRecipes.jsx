@@ -4,16 +4,18 @@ import RecipesList from "../components/MyRecipesPage/RecipesList";
 import { useAuth } from "../context/AuthContext";
 
 export default function MyRecipes() {
-  const { user } = useAuth();
+  const { authData } = useAuth();
   const params = useParams();
-  console.log(user);
+  console.log(authData);
   return (
     <>
       <h1>
-        {user.user.username === params.username ? "My" : `${params.username}'s`}{" "}
+        {authData.user.username === params.username
+          ? "My"
+          : `${params.username}'s`}{" "}
         Recipes
       </h1>
-      {user.user.username === params.username && (
+      {authData.user.username === params.username && (
         <Link to="/recipes/add">Add</Link>
       )}
 
@@ -24,5 +26,6 @@ export default function MyRecipes() {
 
 export async function myRecipesLoader({ request, params }) {
   const recipes = await getMyRecipes(params.username);
+  console.log(recipes);
   return recipes;
 }

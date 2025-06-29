@@ -6,15 +6,22 @@ import obtainToken, { getUserData } from "../http requests/token";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [authData, setAuthData] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log(user);
+
   useEffect(() => {
     async function func() {
       const token = localStorage.getItem("token");
       if (token) {
         const userTemp = await getUserData(token);
-        setUser({ isAuthenticated: true, token: token, user: userTemp.data });
+
+        if (userTemp !== undefined) {
+          setAuthData({
+            isAuthenticated: true,
+            token: token,
+            user: userTemp.data,
+          });
+        }
       }
 
       setLoading(false);
@@ -27,13 +34,18 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const token = await obtainToken({ username, password });
-      const user = await getUserData(token);
-      localStorage.setItem("token", token);
-      setUser({ isAuthenticated: true, token: token, user });
+      const user = await getUserData(token.data.token);
+      console.log(user);
+      localStorage.setItem("token", token.data.token);
+      setAuthData({
+        isAuthenticated: true,
+        token: token.data.token,
+        user: user.data,
+      });
       return true;
     } catch (error) {
       console.error("Login failed:", error);
-      setUser(null);
+      setAuthData(null);
       localStorage.removeItem("token");
       return false;
     } finally {
@@ -42,13 +54,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setUser(null);
+    setAuthData(null);
     localStorage.removeItem("token");
   };
 
   const isAuthenticated = () => {
-    console.log(user);
-    return user && user.isAuthenticated;
+    console.log(authData);
+    return authData && authData.isAuthenticated;
   };
 
   const getAccessToken = () => {
@@ -56,7 +68,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const contextValue = {
-    user,
+    authData,
     loading,
     login,
     logout,

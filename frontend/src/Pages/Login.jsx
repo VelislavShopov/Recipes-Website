@@ -1,6 +1,8 @@
 import {
   Link,
+  Navigate,
   redirect,
+  useActionData,
   useFetcher,
   useNavigate,
   useNavigation,
@@ -9,14 +11,20 @@ import { Form } from "react-router-dom";
 import obtainToken from "../http requests/token";
 import { store } from "../store/store";
 import { setLoggedInThunk } from "../store/user-slice";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
-  const fetcher = useFetcher();
-
+  const navigation = useNavigation();
+  const { login } = useAuth();
+  const actionData = useActionData();
+  if (actionData) {
+    login(actionData.username, actionData.password);
+    return <Navigate to="/"></Navigate>;
+  }
   return (
     <>
       <h1>Login</h1>
-      <fetcher.Form method="post">
+      <Form method="post">
         <div>
           <label>Username: </label>
           <input name="username" />
@@ -26,8 +34,8 @@ export default function Login() {
           <input name="password" type="password" />
         </div>
         <button type="submit">Login</button>
-      </fetcher.Form>
-      {fetcher.state !== "idle" && <p>Logging in.....</p>}
+      </Form>
+      {navigation.state !== "idle" && <p>Logging in.....</p>}
       <Link to="/register/">Register?</Link>
     </>
   );
@@ -40,10 +48,5 @@ export async function loginAction({ request }) {
     password: formData.get("password"),
   };
 
-  const token = await obtainToken(user);
-  localStorage.setItem("token", token.data.token);
-  localStorage.setItem("username", user.username);
-  store.dispatch(setLoggedInThunk(true, user.username));
-
-  return redirect("/");
+  return user;
 }

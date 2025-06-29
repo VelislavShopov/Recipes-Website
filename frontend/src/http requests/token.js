@@ -1,7 +1,8 @@
 import axios from "axios";
+import DEFAULT_URL from "./url";
 export default async function obtainToken(user) {
   try {
-    const response = axios.post("http://localhost:8000/users/auth", user);
+    const response = axios.post(`${DEFAULT_URL}/users/auth`, user);
 
     return response;
   } catch (e) {
@@ -11,7 +12,8 @@ export default async function obtainToken(user) {
 
 export async function getUserData(token) {
   try {
-    const response = axios.get("http://localhost:8000/users/approve/", {
+    console.log(token);
+    const response = await axios.get(`${DEFAULT_URL}/users/approve/`, {
       headers: { Authorization: `Token ${token}` },
     });
     return response;

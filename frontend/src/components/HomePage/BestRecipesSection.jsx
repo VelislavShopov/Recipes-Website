@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getBestRatedRecipes } from "../../http requests/recipes";
+import { fetchBestRecipes } from "../../http requests/recipes";
 import classes from "./BestRecipesSection.module.css";
 
 export default function BestRecipesSection() {
@@ -7,7 +7,7 @@ export default function BestRecipesSection() {
 
   useEffect(() => {
     async function setRecipes() {
-      const recipes = await getBestRatedRecipes();
+      const recipes = await fetchBestRecipes();
       setBestRatedRecipes(recipes);
     }
 

@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render
 from rest_framework import viewsets, status, permissions
 from rest_framework.permissions import IsAuthenticated
@@ -10,9 +11,10 @@ from .serializers import CustomUserSerializer
 
 # Create your views here.
 
+UserModel = get_user_model()
 
 class CustomUserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
+    queryset = UserModel.objects.all()
     serializer_class = CustomUserSerializer
 
     def create(self, request, *args, **kwargs):
@@ -24,6 +26,7 @@ class CustomUserViewSet(viewsets.ModelViewSet):
 
 class UserDataRetrieveView(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         user = request.user
         return Response(CustomUserSerializer(user).data)

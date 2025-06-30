@@ -1,6 +1,6 @@
 import { useLoaderData, useParams } from "react-router-dom";
 import { useState } from "react";
-import { deleteRecipe } from "../../http requests/recipes";
+import { deleteRecipeById } from "../../http requests/recipes";
 import { useAuth } from "../../context/AuthContext";
 
 export default function RecipesList() {
@@ -13,7 +13,7 @@ export default function RecipesList() {
   console.log(auth);
 
   function handleDeleteRecipe(recipeId) {
-    deleteRecipe(recipeId);
+    deleteRecipeById(recipeId);
     setRecipes((oldstate) => {
       return oldstate.filter((item) => item.id !== recipeId);
     });

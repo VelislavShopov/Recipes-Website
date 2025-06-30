@@ -1,4 +1,4 @@
-import { newestRecipes } from "../http requests/recipes";
+import { fetchNewestRecipes } from "../http requests/recipes";
 import { store } from "../store/store";
 
 import NewestRecipesSection from "../components/HomePage/NewestRecipesSection";
@@ -14,7 +14,7 @@ export default function Home() {
 }
 
 export async function homeLoader({ request }) {
-  const data = await newestRecipes();
+  const data = await fetchNewestRecipes();
   console.log(data);
 
   return data;

@@ -10,7 +10,7 @@ export default async function obtainToken(user) {
   }
 }
 
-export async function getUserData(token) {
+export async function fetchUserData(token) {
   try {
     console.log(token);
     const response = await axios.get(`${DEFAULT_URL}/users/approve/`, {

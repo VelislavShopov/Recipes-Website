@@ -1,34 +1,25 @@
+from django.contrib.auth import get_user_model
 from django_countries.serializer_fields import CountryField
 from rest_framework import serializers
 
 from users.models import CustomUser
 
+UserModel = get_user_model()
+
 class CustomUserUsername(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
+        model = UserModel
         fields = ('username','id')
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
     country = CountryField()
     class Meta:
-        model = CustomUser
+        model = UserModel
         fields = "__all__"
 
     def create(self, validated_data):
-        # Pop the password out of validated_data
-        password = validated_data.pop('password', None)
-
-        # Create the user instance without the password first
-        user = self.Meta.model(**validated_data)
-
-        # Set the password using set_password() to hash it
-        if password is not None:
-            user.set_password(password)
-
-        # Save the user to the database
-        user.save()
-
+        user = UserModel.objects.create_user(**validated_data)
         return user
 
     def update(self, instance, validated_data):

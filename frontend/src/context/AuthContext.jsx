@@ -1,7 +1,5 @@
-// src/context/AuthContext.js
 import { createContext, useState, useEffect, useContext } from "react";
-import axios from "axios"; // Or your preferred HTTP client
-import obtainToken, { getUserData } from "../http requests/token";
+import obtainToken, { fetchUserData } from "../http requests/token";
 
 const AuthContext = createContext(null);
 
@@ -13,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     async function func() {
       const token = localStorage.getItem("token");
       if (token) {
-        const userTemp = await getUserData(token);
+        const userTemp = await fetchUserData(token);
 
         if (userTemp !== undefined) {
           setAuthData({
@@ -34,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const token = await obtainToken({ username, password });
-      const user = await getUserData(token.data.token);
+      const user = await fetchUserData(token.data.token);
       console.log(user);
       localStorage.setItem("token", token.data.token);
       setAuthData({

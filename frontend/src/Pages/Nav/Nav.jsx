@@ -26,9 +26,7 @@ export default function Nav() {
           {authData === null && <Link to="login">Login</Link>}
           {authData && authData.isAuthenticated && (
             <>
-              <Link to={`recipes/${localStorage.getItem("username")}`}>
-                My Recipes
-              </Link>
+              <Link to={`recipes/${authData.user.username}`}>My Recipes</Link>
               <button onClick={handleLogout}>Log out</button>
             </>
           )}

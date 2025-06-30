@@ -2,11 +2,10 @@ import {
   Link,
   Navigate,
   Form,
-  useFetcher,
   useActionData,
   useNavigation,
 } from "react-router-dom";
-import sendRegisterData from "../http requests/register";
+import registerUser from "../http requests/register";
 import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
@@ -14,8 +13,6 @@ export default function Register() {
   const navigation = useNavigation();
   const { login } = useAuth();
 
-  console.log(actionData);
-  console.log(actionData !== undefined);
   if (actionData !== undefined && actionData.isComplete) {
     login(actionData.user.username, actionData.user.password);
     return <Navigate to="/"></Navigate>;
@@ -51,7 +48,7 @@ export default function Register() {
 
 export async function registerAction({ request }) {
   const formData = await request.formData();
-  const response = await sendRegisterData(formData);
+  const response = await registerUser(formData);
   console.log(response);
   return {
     isComplete: response.isComplete,

@@ -1,5 +1,5 @@
-import { Link, useLoaderData, useParams } from "react-router-dom";
-import { getMyRecipes } from "../http requests/recipes";
+import { Link, useParams } from "react-router-dom";
+import { fetchRecipesByUser } from "../http requests/recipes";
 import RecipesList from "../components/MyRecipesPage/RecipesList";
 import { useAuth } from "../context/AuthContext";
 
@@ -25,7 +25,7 @@ export default function MyRecipes() {
 }
 
 export async function myRecipesLoader({ request, params }) {
-  const recipes = await getMyRecipes(params.username);
+  const recipes = await fetchRecipesByUser(params.username);
   console.log(recipes);
   return recipes;
 }

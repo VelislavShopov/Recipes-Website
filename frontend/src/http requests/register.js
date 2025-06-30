@@ -1,9 +1,7 @@
 import axios from "axios";
-import obtainToken from "./token";
-import { useAuth } from "../context/AuthContext";
 import DEFAULT_URL from "./url";
 
-export default async function sendRegisterData(formData) {
+export default async function registerUser(formData) {
   const user = {
     first_name: formData.get("first_name"),
     last_name: formData.get("last_name"),
@@ -13,7 +11,7 @@ export default async function sendRegisterData(formData) {
   };
 
   try {
-    const createResponse = await axios.post(`${DEFAULT_URL}/users/`, user);
+    const response = await axios.post(`${DEFAULT_URL}/users/create`, user);
     return { isComplete: true };
   } catch (e) {
     console.log(e);

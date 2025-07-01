@@ -1,16 +1,12 @@
 from django.urls import include, path
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.routers import DefaultRouter
 
-from users import views
-from users.views import UserDataRetrieveView
-
-router = DefaultRouter()
-router.register('', views.CustomUserViewSet, basename='users')
+from users.views import CreateCustomUser, RetrieveCustomUserById, RetrieveAuthenticatedUserByToken
 
 urlpatterns = [
-    path('approve/',UserDataRetrieveView.as_view()),
-    path('',include(router.urls)),
+    path('create',CreateCustomUser.as_view()),
+    path('retrieve/<int:id>',RetrieveCustomUserById.as_view()),
+    path('retrieve/', RetrieveAuthenticatedUserByToken.as_view()),
     path('auth',ObtainAuthToken.as_view()),
 
 ]

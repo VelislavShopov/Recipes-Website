@@ -49,7 +49,7 @@ export default function Register() {
 export async function registerAction({ request }) {
   const formData = await request.formData();
   const response = await registerUser(formData);
-  console.log(response);
+
   return {
     isComplete: response.isComplete,
     user: {

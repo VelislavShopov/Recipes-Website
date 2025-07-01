@@ -28,17 +28,14 @@ export const AuthProvider = ({ children }) => {
     func();
   }, []);
 
-  const login = async (username, password) => {
+  const login = async (userData, token) => {
     try {
       setLoading(true);
-      const token = await obtainToken({ username, password });
-      const user = await fetchUserData(token.data.token);
-      console.log(user);
-      localStorage.setItem("token", token.data.token);
+      localStorage.setItem("token", token);
       setAuthData({
         isAuthenticated: true,
-        token: token.data.token,
-        user: user.data,
+        token: token,
+        user: userData,
       });
       return true;
     } catch (error) {

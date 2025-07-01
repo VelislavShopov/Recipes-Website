@@ -15,7 +15,6 @@ export default function Home() {
 
 export async function homeLoader({ request }) {
   const data = await fetchNewestRecipes();
-  console.log(data);
 
   return data;
 }

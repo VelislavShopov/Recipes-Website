@@ -1,8 +1,9 @@
 import axios from "axios";
-import { redirect } from "react-router-dom";
+import { Form, redirect } from "react-router-dom";
 
 export default function AddRecipe() {
-  return <></>;
+  return;
+  <Form></Form>;
 }
 
 export async function addRecipeLoader() {}

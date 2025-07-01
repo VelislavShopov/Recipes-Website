@@ -1,8 +1,7 @@
 import { useSelector } from "react-redux";
+import { useLoaderData } from "react-router-dom";
 
-export default function AllRecipesSection() {
-  const recipes = useSelector((store) => store.recipes.filteredRecipes);
-  console.log(recipes);
+export default function AllRecipesSection({ recipes }) {
   return (
     <section>
       {recipes.map((recipe) => {

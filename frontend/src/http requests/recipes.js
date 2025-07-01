@@ -23,13 +23,23 @@ export async function fetchRecipesByUser(pk) {
 
 export async function deleteRecipeById(recipeId) {
   const token = localStorage.getItem("token");
-  const response = await axios.delete(`${DEFAULT_URL}/recipes/${recipeId}/`, {
-    headers: `Authorization:Token ${token}`,
-  });
+  const response = await axios.delete(
+    `${DEFAULT_URL}/recipes/${recipeId}/delete/`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
 }
 
-export async function getAllRecipes() {
-  const response = await axios.get(`${DEFAULT_URL}/recipes/`);
+export async function fetchRecipes(filters) {
+  console.log(filters);
+  const response = await axios.get(`${DEFAULT_URL}/recipes/`, {
+    params: {
+      filters,
+    },
+  });
 
-  return response;
+  return response.data;
 }

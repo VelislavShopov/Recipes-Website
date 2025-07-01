@@ -1,9 +1,4 @@
-import { useDispatch } from "react-redux";
-import { addFilterRecipes } from "../../store/recipes-slice";
-
-export default function AllRecipesAside() {
-  const dispatch = useDispatch();
-
+export default function AllRecipesAside({ handleRecipesFilter }) {
   return (
     <aside>
       <div>
@@ -11,23 +6,18 @@ export default function AllRecipesAside() {
           <li>
             <input
               type="checkbox"
-              onChange={() => dispatch(addFilterRecipes("type_dish", "salad"))}
+              onChange={() => handleRecipesFilter({ type_dish: "salad" })}
             />
             <label>Salads</label>
           </li>
           <li>
-            <input
-              type="checkbox"
-              onChange={() => dispatch(addFilterRecipes("type_dish", "main"))}
-            />
+            <input type="checkbox" />
             <label>Mains</label>
           </li>
           <li>
             <input
               type="checkbox"
-              onChange={() =>
-                dispatch(addFilterRecipes("type_dish", "dessert"))
-              }
+              onChange={() => handleRecipesFilter({ type_dish: "dessert" })}
             />
             <label>Desserts</label>
           </li>

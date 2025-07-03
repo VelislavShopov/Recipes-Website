@@ -16,6 +16,7 @@ import { addRecipeLoader } from "./Pages/AddRecipe";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/Authorization/ProtectedRoute";
 import AllRecipes, { AllRecipesLoader } from "./Pages/AllRecipes";
+import { addRecipeAction } from "./components/AddRecipe/AddRecipeSection";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
             path: "recipes/add",
             element: <AddRecipe></AddRecipe>,
             loader: addRecipeLoader,
+            action: addRecipeAction,
           },
         ],
       },

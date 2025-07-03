@@ -19,7 +19,6 @@ export default function AllRecipes() {
       let currentValues = updatedFilters[filterKey];
       if (currentValues.includes(filterValue)) {
         const filteredArray = currentValues.filter((v) => v !== filterValue);
-        console.log(filteredArray);
         if (filteredArray.length > 0) {
           updatedFilters[filterKey] = filteredArray;
         } else {
@@ -32,7 +31,6 @@ export default function AllRecipes() {
 
       console.log(updatedFilters);
     } else {
-      // Add the new filter value as an array
       updatedFilters[filterKey] = [filterValue];
     }
 

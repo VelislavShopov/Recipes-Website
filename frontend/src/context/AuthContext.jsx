@@ -54,7 +54,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAuthenticated = () => {
-    console.log(authData);
     return authData && authData.isAuthenticated;
   };
 

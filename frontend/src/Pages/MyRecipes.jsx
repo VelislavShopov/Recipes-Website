@@ -6,7 +6,6 @@ import { useAuth } from "../context/AuthContext";
 export default function MyRecipes() {
   const { authData } = useAuth();
   const params = useParams();
-  console.log(authData);
   return (
     <>
       <h1>

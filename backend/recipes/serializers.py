@@ -15,10 +15,10 @@ class RatingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class RecipeSerializer(serializers.ModelSerializer):
-    publication_date = serializers.DateField(format="%Y-%m-%d")
+    publication_date = serializers.DateField(format="%Y-%m-%d",read_only=True)
     ratings = RatingSerializer(many=True, read_only=True)
     ingredients = IngredientSerializer(many=True, read_only=True)
-    user = CustomUserUsername()
+    user = CustomUserUsername(read_only=True)
     class Meta:
         model = Recipe
         fields = '__all__'

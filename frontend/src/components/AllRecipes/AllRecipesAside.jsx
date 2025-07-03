@@ -11,7 +11,10 @@ export default function AllRecipesAside({ handleRecipesFilter }) {
             <label>Salads</label>
           </li>
           <li>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              onChange={() => handleRecipesFilter({ type_dish: "main" })}
+            />
             <label>Mains</label>
           </li>
           <li>

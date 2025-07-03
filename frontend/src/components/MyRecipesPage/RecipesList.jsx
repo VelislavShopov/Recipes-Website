@@ -7,7 +7,7 @@ export default function RecipesList() {
   const params = useParams();
   const { authData } = useAuth();
   const loaderData = useLoaderData();
-  const [recipes, setRecipes] = useState(loaderData);
+  const [recipes, setRecipes] = useState(loaderData.results);
   const auth = authData.user.username === params.username;
   console.log(authData.user);
   console.log(auth);

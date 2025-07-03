@@ -34,12 +34,19 @@ export async function deleteRecipeById(recipeId) {
 }
 
 export async function fetchRecipes(filters) {
-  console.log(filters);
   const response = await axios.get(`${DEFAULT_URL}/recipes/`, {
-    params: {
-      filters,
-    },
+    params: filters,
   });
 
   return response.data;
+}
+
+export async function createRecipe(recipe) {
+  const token = localStorage.getItem("token");
+  const response = await axios.post(`${DEFAULT_URL}/recipes/create/`, recipe, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Token ${token}`,
+    },
+  });
 }

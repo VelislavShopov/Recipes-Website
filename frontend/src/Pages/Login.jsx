@@ -37,7 +37,6 @@ export default function Login() {
       } else if (actionData.token && actionData.userData) {
         login(actionData.userData, actionData.token);
         setLogInProcessed(true);
-        console.log(redirectPath);
         navigate(redirectPath, { replace: true });
       }
     }

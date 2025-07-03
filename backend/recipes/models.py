@@ -16,9 +16,9 @@ class Recipe(UserMixin,PublicationMixin):
     description = models.TextField()
 
     class TypeDishChoices(models.TextChoices):
-        SALAD = "Salad"
-        MAIN = "Main"
-        DESSERT = "Dessert"
+        SALAD = "salad"
+        MAIN = "main"
+        DESSERT = "dessert"
 
 
     @property

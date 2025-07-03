@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.db.models import Avg, Count, F, FloatField, ExpressionWrapper
 from .models import Recipe, Rating
 
@@ -18,3 +20,24 @@ def get_best_recipes():
     ).order_by('-WR')
 
     return recipes
+
+
+def create_filters_dict(request):
+    filters = {}
+    query_params = request.GET
+    for key in query_params:
+        if key in ['page', 'ordering']:  # ignore pagination or other keys
+            continue
+
+        values = query_params.getlist(key)
+
+        # Example: map 'type_dish[]' to 'type_dish'
+        cleaned_key = key.replace('[]', '')
+
+        # If only one value, use exact match
+        if len(values) == 1:
+            filters[cleaned_key] = values[0]
+        else:
+            filters[f"{cleaned_key}__in"] = values
+
+    return filters

@@ -50,3 +50,9 @@ export async function createRecipe(recipe) {
     },
   });
 }
+
+export async function fetchRecipeBySlug(slug) {
+  const response = await axios.get(`${DEFAULT_URL}/recipes/${slug}`);
+
+  return response.data;
+}

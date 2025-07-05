@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchBestRecipes } from "../../http requests/recipes";
 import classes from "./BestRecipesSection.module.css";
+import { Link } from "react-router-dom";
 
 export default function BestRecipesSection() {
   const [bestRatedRecipes, setBestRatedRecipes] = useState([]);
@@ -26,7 +27,12 @@ export default function BestRecipesSection() {
               alt="recipe"
             />
             <div className={classes.recipe_info_container}>
-              <h2 className={classes.recipe_title}>{recipe.name}</h2>
+              <Link
+                to={`recipes/${recipe.slug}`}
+                className={classes.recipe_title}
+              >
+                {recipe.name}
+              </Link>
               <div>
                 <p>{recipe.user.username}</p>
                 <p>{recipe.publication_date}</p>

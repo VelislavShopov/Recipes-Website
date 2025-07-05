@@ -5,16 +5,20 @@ import {
   useActionData,
   useNavigation,
 } from "react-router-dom";
-import registerUser from "../http requests/register";
+import registerUser, { fetchUserData } from "../http requests/accounts";
 import { useAuth } from "../context/AuthContext";
+import obtainToken from "../http requests/token";
 
 export default function Register() {
   const actionData = useActionData();
   const navigation = useNavigation();
   const { login } = useAuth();
 
+  console.log(actionData);
+
   if (actionData !== undefined && actionData.isComplete) {
-    login(actionData.user.username, actionData.user.password);
+    console.log(actionData);
+    login(actionData.user, actionData.token);
     return <Navigate to="/"></Navigate>;
   }
 
@@ -35,8 +39,19 @@ export default function Register() {
           <input name="username" required></input>
         </div>
         <div>
+          <label>Email:</label>
+          <input name="email" type="email" required></input>
+        </div>
+        <div>
           <label>Password: </label>
-          <input name="password" type="password"></input>
+          <input name="password1" type="password" required></input>
+        </div>
+        <div>
+          <label>Password Confirmation: </label>
+          {actionData && actionData.error && actionData.error.password2 && (
+            <p>{actionData.error.password2}</p>
+          )}
+          <input name="password2" type="password" required></input>
         </div>
         <button type="submit">Register</button>
       </Form>
@@ -48,13 +63,27 @@ export default function Register() {
 
 export async function registerAction({ request }) {
   const formData = await request.formData();
+  console.log(formData.get("password1"));
+  console.log(formData.get("password2"));
+
+  if (formData.get("password1") !== formData.get("password2")) {
+    return {
+      error: {
+        password2: "Passwords don't match!",
+      },
+    };
+  }
+
   const response = await registerUser(formData);
+  const token = await obtainToken({
+    username: formData.get("username"),
+    password: formData.get("password1"),
+  });
+  const user = await fetchUserData(token);
 
   return {
     isComplete: response.isComplete,
-    user: {
-      username: formData.get("username"),
-      password: formData.get("password"),
-    },
+    user: user.data,
+    token,
   };
 }

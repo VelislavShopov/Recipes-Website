@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 CUSTOM_APPS = [
-    'users',
+    'accounts',
     'recipes',
 ]
 
@@ -137,7 +137,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -148,3 +148,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
+
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]

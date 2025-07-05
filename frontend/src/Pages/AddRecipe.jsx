@@ -8,6 +8,10 @@ export default function AddRecipe() {
 }
 
 export async function addRecipeLoader() {
-  const ingredients = await fetchIngredients();
-  return { ingredients };
+  try {
+    const ingredients = await fetchIngredients();
+    return { ingredients };
+  } catch (error) {
+    console.log(error);
+  }
 }

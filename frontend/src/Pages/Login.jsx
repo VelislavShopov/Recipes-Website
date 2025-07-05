@@ -9,7 +9,7 @@ import { Form } from "react-router-dom";
 import obtainToken from "../http requests/token";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
-import { fetchUserData } from "../http requests/token";
+import { fetchUserData } from "../http requests/accounts";
 
 export default function Login() {
   const navigation = useNavigation();

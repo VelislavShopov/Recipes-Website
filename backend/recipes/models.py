@@ -2,6 +2,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.conf import settings
 from django.db.models import Avg
+from django.utils.text import slugify
 
 from recipes.mixins import UserMixin, PublicationMixin
 
@@ -15,10 +16,14 @@ class Recipe(UserMixin,PublicationMixin):
 
     description = models.TextField()
 
+    slug = models.SlugField(unique=True)
+
     class TypeDishChoices(models.TextChoices):
         SALAD = "salad"
+        SOUP = "soup"
         MAIN = "main"
         DESSERT = "dessert"
+
 
 
     @property

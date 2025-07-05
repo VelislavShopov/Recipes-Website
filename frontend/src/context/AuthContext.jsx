@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import obtainToken, { fetchUserData } from "../http requests/token";
+import obtainToken from "../http requests/token";
+import { fetchUserData } from "../http requests/accounts";
 
 const AuthContext = createContext(null);
 

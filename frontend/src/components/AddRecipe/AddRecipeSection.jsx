@@ -7,6 +7,7 @@ import {
   useNavigation,
 } from "react-router-dom";
 import { createRecipe } from "../../http requests/recipes";
+import { TYPE_DISH } from "../../utils/dish_info";
 
 export default function AddRecipeSection() {
   const loaderData = useLoaderData();
@@ -55,9 +56,9 @@ export default function AddRecipeSection() {
         <div>
           <label>Type:</label>
           <select name="type_dish">
-            <option value="salad">Salad</option>
-            <option value="main">Main</option>
-            <option value="dessert">Dessert</option>
+            {TYPE_DISH.map((item) => {
+              return <option value={item}>{item}</option>;
+            })}
           </select>
         </div>
         <div>

@@ -35,8 +35,15 @@ export default function BestRecipesSection() {
               </Link>
               <div>
                 <p>{recipe.avg_stars}/5</p>
-                <p>{recipe.user.username}</p>
-                <p>{recipe.publication_date}</p>
+                <div>
+                  <img
+                    src={recipe.user.profile.picture}
+                    style={{ maxHeight: "3rem" }}
+                  ></img>
+                  <p>{recipe.user.username}</p>
+                </div>
+
+                <p>{recipe.publication_date_time}</p>
               </div>
             </div>
           </div>

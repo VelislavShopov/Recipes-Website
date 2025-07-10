@@ -8,7 +8,7 @@ class UserMixin(models.Model):
         abstract = True
 
 class PublicationMixin(models.Model):
-    publication_date = models.DateField(auto_now_add=True)
+    publication_date_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         abstract = True

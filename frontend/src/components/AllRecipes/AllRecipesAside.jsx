@@ -5,7 +5,6 @@ export default function AllRecipesAside({
   handleRecipesFilter,
   handleClearFilter,
 }) {
-  console.log(filters);
   return (
     <aside>
       <div>

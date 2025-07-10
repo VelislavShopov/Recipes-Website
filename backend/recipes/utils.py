@@ -28,13 +28,16 @@ def create_filters_dict(request):
     filters = {}
     query_params = request.GET
     for key in query_params:
-        if key in ['page', 'ordering']:  # ignore pagination or other keys
+        if key in ['page', 'ordering','q']:  # ignore pagination or other keys
             continue
 
         values = query_params.getlist(key)
 
         # If only one value, use exact match
         filters[f"{key}__in"] = values
+
+    if "q" in query_params:
+        filters["name__icontains"] = query_params["q"]
 
     return filters
 
@@ -47,3 +50,16 @@ def create_slug_for_recipe(name):
         slug = f"{base_slug}-{num}"
         num += 1
     return slug
+
+def suffix_of_day(day):
+    if 11 <= day <= 13:
+        return "th"
+    last = day % 10
+    if last == 1:
+        return "st"
+    elif last == 2:
+        return "nd"
+    elif last == 3:
+        return "rd"
+    else:
+        return "th"

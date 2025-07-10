@@ -4,8 +4,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.generics import ListAPIView, get_object_or_404, DestroyAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from accounts.permissions import RecipeOfUserPermission
-from .models import Recipe, Ingredient
-from .serializers import RecipeSerializer, IngredientSerializer
+from .models import Recipe, Ingredient, Rating
+from .serializers import RecipeSerializer, IngredientSerializer, RatingSerializer
 from .utils import get_best_recipes, create_filters_dict
 
 # Create your views here.
@@ -37,7 +37,10 @@ class RecipeListView(ListAPIView):
 
     def get_queryset(self):
         filters = create_filters_dict(self.request)
-        return Recipe.objects.filter(**filters)
+        print(filters)
+        recipes = Recipe.objects.filter(**filters)
+        print(recipes)
+        return recipes
 
 
 
@@ -50,7 +53,7 @@ class NewestRecipesListView(ListAPIView):
     serializer_class = RecipeSerializer
     pagination_class = None
     def get_queryset(self):
-        return Recipe.objects.all().order_by('-publication_date')[:10]
+        return Recipe.objects.all().order_by('-publication_date_time')[:10]
 
 class BestRatedRecipesListView(ListAPIView):
     serializer_class = RecipeSerializer
@@ -79,3 +82,6 @@ class IngredientsListView(ListAPIView):
     serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
 
+class CreateRatingView(CreateAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer

@@ -18,7 +18,6 @@ class CustomAuthTokenSerializer(serializers.Serializer):
     )
 
     def validate(self,attrs):
-        print(attrs)
         username = attrs.get('username')
         password = attrs.get('password')
 
@@ -35,10 +34,7 @@ class CustomAuthTokenSerializer(serializers.Serializer):
 
 
 
-class CustomUserUsername(serializers.ModelSerializer):
-    class Meta:
-        model = UserModel
-        fields = ('username','id')
+
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -54,4 +50,17 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        exclude = ('user','id')
+        exclude = ('user',)
+
+
+class ShortProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('picture','country')
+
+
+class CustomUserUsername(serializers.ModelSerializer):
+    profile = ShortProfileSerializer(read_only=True)
+    class Meta:
+        model = UserModel
+        fields = ('username','profile')

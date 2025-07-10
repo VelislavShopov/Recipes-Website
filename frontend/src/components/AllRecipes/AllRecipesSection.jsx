@@ -4,7 +4,6 @@ import { useLoaderData } from "react-router-dom";
 import { PageSelection } from "./PageSelection";
 
 export default function AllRecipesSection({ recipes, handlePageChange }) {
-  console.log(recipes);
   const results = recipes.results;
   const count = recipes.count;
 

@@ -3,6 +3,7 @@ import AllRecipesAside from "../components/AllRecipes/AllRecipesAside";
 import AllRecipesSection from "../components/AllRecipes/AllRecipesSection";
 import { fetchRecipes } from "../http requests/recipes";
 import { useState } from "react";
+import SearchRecipe from "../components/AllRecipes/SearchRecipe";
 
 export default function BrowsePage() {
   const loaderData = useLoaderData();
@@ -18,16 +19,17 @@ export default function BrowsePage() {
   }
 
   async function handleRecipesFilter(filter) {
-    searchParams.delete("page");
     const filterKey = Object.keys(filter)[0];
     const filterValue = filter[filterKey];
-
+    const q = searchParams.get("q");
     let updatedFilters = { ...filters };
+    if (q !== null) {
+      updatedFilters["q"] = [q];
+    }
 
     if (filterKey in updatedFilters) {
       let currentValues = updatedFilters[filterKey];
 
-      // Ensure currentValues is always an array
       if (!Array.isArray(currentValues)) {
         currentValues = [currentValues];
       }
@@ -51,6 +53,8 @@ export default function BrowsePage() {
       valueArray.forEach((v) => newSearchParams.append(key, v));
     });
 
+    console.log(newSearchParams);
+
     setSearchParams(newSearchParams);
 
     const response = await fetchRecipes(newSearchParams);
@@ -65,6 +69,13 @@ export default function BrowsePage() {
     setSearchParams(searchParams);
   }
 
+  async function handleSearchRecipes(value) {
+    searchParams.set("q", value);
+    const response = await fetchRecipes(searchParams);
+    setRecipes(response);
+    setSearchParams(searchParams);
+  }
+
   return (
     <>
       <AllRecipesAside
@@ -72,6 +83,7 @@ export default function BrowsePage() {
         handleRecipesFilter={handleRecipesFilter}
         handleClearFilter={handleClearFilter}
       ></AllRecipesAside>
+      <SearchRecipe handleSearchRecipes={handleSearchRecipes}></SearchRecipe>
       <AllRecipesSection
         recipes={recipes}
         handlePageChange={handlePageChange}
@@ -91,8 +103,6 @@ export async function browseLoader({ request }) {
       filters[key] = [value];
     }
   });
-
-  console.log("Filters from loader:", filters);
 
   const apiParams = new URLSearchParams();
 

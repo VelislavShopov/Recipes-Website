@@ -52,7 +52,6 @@ export function PageSelection({ recipes, handlePageChange }) {
     setPages(pageInitial);
   }, [recipes]);
 
-  console.log(pages);
   return (
     <div>
       {pages.map((page) => {

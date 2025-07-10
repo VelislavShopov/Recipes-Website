@@ -10,21 +10,19 @@ from recipes.mixins import UserMixin, PublicationMixin
 # Create your models here.
 class Recipe(UserMixin,PublicationMixin):
     name = models.CharField(max_length=100)
+
     ingredients = models.ManyToManyField("Ingredient", blank=True)
     class TypeDishChoices(models.TextChoices):
         SALAD = "salad"
         SOUP = "soup"
         MAIN = "main"
         DESSERT = "dessert"
+
     type_dish = models.CharField(max_length=50,choices=TypeDishChoices)
     image = models.ImageField(upload_to="recipes/images/")
-
     description = models.TextField()
 
     slug = models.SlugField(unique=True)
-
-
-
 
     def __str__(self):
         return self.name
@@ -50,3 +48,10 @@ class Rating(UserMixin,PublicationMixin):
     comment = models.TextField(blank=True,null=True)
     recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE,related_name="ratings")
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['recipe','user'],name="unique_recipe_user")
+        ]
+
+    def __str__(self):
+        return f"{self.recipe} - {self.user} - {self.stars}"

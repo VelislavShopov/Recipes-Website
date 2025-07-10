@@ -1,12 +1,11 @@
 import json
 
 from django.contrib.auth import get_user_model
-from django.utils.text import slugify
 from rest_framework.generics import ListAPIView, get_object_or_404, DestroyAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from util.permissions import RecipeOfUserPermission
+from accounts.permissions import RecipeOfUserPermission
 from .models import Recipe, Ingredient
-from .serializers import RecipeSerializer, RecipeShortSerializer, IngredientSerializer
+from .serializers import RecipeSerializer, IngredientSerializer
 from .utils import get_best_recipes, create_filters_dict
 
 # Create your views here.
@@ -34,6 +33,7 @@ class RetrieveRecipeBySlug(RetrieveAPIView):
 
 class RecipeListView(ListAPIView):
     serializer_class = RecipeSerializer
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         filters = create_filters_dict(self.request)
@@ -61,7 +61,7 @@ class BestRatedRecipesListView(ListAPIView):
 
 class UserRecipeProfileListView(ListAPIView):
     permission_classes = (AllowAny,)
-    serializer_class = RecipeShortSerializer
+    serializer_class = RecipeSerializer
 
     lookup_field = 'username'
     lookup_url_kwarg = 'username'

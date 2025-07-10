@@ -1,5 +1,7 @@
+from django.db.models import Avg
 from django.utils.text import slugify
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 
 from recipes.models import Recipe, Ingredient, Rating
 from accounts.serializers import CustomUserUsername
@@ -20,6 +22,16 @@ class RecipeSerializer(serializers.ModelSerializer):
     ratings = RatingSerializer(many=True, read_only=True)
     ingredients = IngredientSerializer(many=True, read_only=True)
     user = CustomUserUsername(read_only=True)
+    avg_stars = SerializerMethodField()
+
+    def get_avg_stars(self, obj):
+        ratings = obj.ratings.all()
+
+        if ratings.exists():
+            return round(ratings.aggregate(Avg('stars'))['stars__avg'],2)
+
+        return 0
+
     class Meta:
         model = Recipe
         fields = '__all__'
@@ -27,14 +39,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         read_only_fields = ('slug',)
 
     def create(self, validated_data):
-        name = validated_data.get('name')
-        base_slug = slugify(name)
-        slug = base_slug
-        num = 1
-        while Recipe.objects.filter(slug=slug).exists():
-            slug = f"{base_slug}-{num}"
-            num += 1
-        validated_data['slug'] = slug
+        validated_data['slug'] = create_slug_for_recipe(validated_data.get('name'))
         return super().create(validated_data)
 
 

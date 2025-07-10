@@ -11,7 +11,7 @@ import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import { fetchUserData } from "../http requests/accounts";
 
-export default function Login() {
+export default function LoginPage() {
   const navigation = useNavigation();
   const { login } = useAuth();
   const actionData = useActionData();

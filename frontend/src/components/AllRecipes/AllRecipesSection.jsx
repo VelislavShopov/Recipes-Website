@@ -1,8 +1,14 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useLoaderData } from "react-router-dom";
+import { PageSelection } from "./PageSelection";
 
-export default function AllRecipesSection({ recipes, handleResetFilters }) {
-  if (recipes.length === 0) {
+export default function AllRecipesSection({ recipes, handlePageChange }) {
+  console.log(recipes);
+  const results = recipes.results;
+  const count = recipes.count;
+
+  if (recipes.count === 0) {
     return (
       <section>
         <h2>No matches found</h2>
@@ -13,9 +19,9 @@ export default function AllRecipesSection({ recipes, handleResetFilters }) {
   return (
     <section>
       <p>
-        {recipes.length} match{recipes.length > 1 && "es"}
+        {count} match{count > 1 && "es"}
       </p>
-      {recipes.map((recipe) => {
+      {results.map((recipe) => {
         return (
           <div key={recipe.id}>
             <img src={recipe.image} style={{ maxHeight: "5rem" }}></img>
@@ -23,13 +29,17 @@ export default function AllRecipesSection({ recipes, handleResetFilters }) {
             <div>
               <ol>
                 {recipe.ingredients.map((i) => {
-                  return <li>{i.name}</li>;
+                  return <li key={i.name}>{i.name}</li>;
                 })}
               </ol>
             </div>
           </div>
         );
       })}
+      <PageSelection
+        recipes={recipes}
+        handlePageChange={handlePageChange}
+      ></PageSelection>
     </section>
   );
 }

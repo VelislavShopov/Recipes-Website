@@ -1,11 +1,12 @@
 import { useLoaderData } from "react-router-dom";
 import { fetchRecipeBySlug } from "../http requests/recipes";
+import RecipeDetailSection from "../components/RecipeDetail/RecipeDetailSection";
 
-export default function RecipeDetail() {
+export default function RecipeDetailPage() {
   const loaderData = useLoaderData();
   console.log(loaderData);
 
-  return <section>{loaderData.name}</section>;
+  return <RecipeDetailSection></RecipeDetailSection>;
 }
 
 export async function recipeDetailLoader({ request, params }) {

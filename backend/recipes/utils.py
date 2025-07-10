@@ -1,6 +1,8 @@
 from collections import defaultdict
 
 from django.db.models import Avg, Count, F, FloatField, ExpressionWrapper
+from django.utils.text import slugify
+
 from .models import Recipe, Rating
 
 def get_best_recipes():
@@ -31,13 +33,17 @@ def create_filters_dict(request):
 
         values = query_params.getlist(key)
 
-        # Example: map 'type_dish[]' to 'type_dish'
-        cleaned_key = key.replace('[]', '')
-
         # If only one value, use exact match
-        if len(values) == 1:
-            filters[cleaned_key] = values[0]
-        else:
-            filters[f"{cleaned_key}__in"] = values
+        filters[f"{key}__in"] = values
 
     return filters
+
+
+def create_slug_for_recipe(name):
+    base_slug = slugify(name)
+    slug = base_slug
+    num = 1
+    while Recipe.objects.filter(slug=slug).exists():
+        slug = f"{base_slug}-{num}"
+        num += 1
+    return slug

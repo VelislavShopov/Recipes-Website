@@ -3,7 +3,7 @@ import { Form, redirect } from "react-router-dom";
 import AddRecipeSection from "../components/AddRecipe/AddRecipeSection";
 import { fetchIngredients } from "../http requests/ingredients";
 
-export default function AddRecipe() {
+export default function AddRecipePage() {
   return <AddRecipeSection></AddRecipeSection>;
 }
 

@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django_countries.serializer_fields import CountryField
 from rest_framework import serializers
 
-from accounts.models import CustomUser
+from .models import Profile
 
 UserModel = get_user_model()
 
@@ -42,7 +42,6 @@ class CustomUserUsername(serializers.ModelSerializer):
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    country = CountryField()
     class Meta:
         model = UserModel
         fields = "__all__"
@@ -50,3 +49,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = UserModel.objects.create_user(**validated_data)
         return user
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        exclude = ('user','id')

@@ -2,22 +2,22 @@ import { createBrowserRouter } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 
 import Layout from "./Pages/Layout";
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
-import MyRecipes from "./Pages/MyRecipes";
-import AddRecipe from "./Pages/AddRecipe";
+import HomePage from "./Pages/HomePage";
+import LoginPage from "./Pages/LoginPage";
+import RegisterPage from "./Pages/RegisterPage";
+import ProfilePage from "./Pages/ProfilePage";
+import AddRecipePage from "./Pages/AddRecipePage";
 
-import { homeLoader } from "./Pages/Home";
-import { loginAction } from "./Pages/Login";
-import { registerAction } from "./Pages/Register";
-import { myRecipesLoader } from "./Pages/MyRecipes";
-import { addRecipeLoader } from "./Pages/AddRecipe";
+import { homeLoader } from "./Pages/HomePage";
+import { loginAction } from "./Pages/LoginPage";
+import { registerAction } from "./Pages/RegisterPage";
+import { profileLoader } from "./Pages/ProfilePage";
+import { addRecipeLoader } from "./Pages/AddRecipePage";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/Authorization/ProtectedRoute";
-import AllRecipes, { AllRecipesLoader } from "./Pages/AllRecipes";
+import BrowsePage, { browseLoader } from "./Pages/BrowsePage";
 import { addRecipeAction } from "./components/AddRecipe/AddRecipeSection";
-import RecipeDetail, { recipeDetailLoader } from "./Pages/RecipeDetail";
+import RecipeDetailPage, { recipeDetailLoader } from "./Pages/RecipeDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -26,35 +26,30 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home></Home>,
+        element: <HomePage></HomePage>,
         loader: homeLoader,
       },
       {
         path: "login/",
-        element: <Login></Login>,
+        element: <LoginPage></LoginPage>,
         action: loginAction,
       },
       {
         path: "register/",
-        element: <Register></Register>,
+        element: <RegisterPage></RegisterPage>,
         action: registerAction,
-      },
-      {
-        path: "users/:username/recipes",
-        element: <MyRecipes></MyRecipes>,
-        loader: myRecipesLoader,
       },
       {
         path: "recipes/",
         children: [
           {
             index: true,
-            element: <AllRecipes></AllRecipes>,
-            loader: AllRecipesLoader,
+            element: <BrowsePage></BrowsePage>,
+            loader: browseLoader,
           },
           {
             path: ":slug/",
-            element: <RecipeDetail></RecipeDetail>,
+            element: <RecipeDetailPage></RecipeDetailPage>,
             loader: recipeDetailLoader,
           },
         ],
@@ -64,9 +59,14 @@ const router = createBrowserRouter([
         children: [
           {
             path: "recipes/add/",
-            element: <AddRecipe></AddRecipe>,
+            element: <AddRecipePage></AddRecipePage>,
             loader: addRecipeLoader,
             action: addRecipeAction,
+          },
+          {
+            path: "users/:username/",
+            element: <ProfilePage></ProfilePage>,
+            loader: profileLoader,
           },
         ],
       },

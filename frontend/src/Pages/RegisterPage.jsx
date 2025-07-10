@@ -9,15 +9,12 @@ import registerUser, { fetchUserData } from "../http requests/accounts";
 import { useAuth } from "../context/AuthContext";
 import obtainToken from "../http requests/token";
 
-export default function Register() {
+export default function RegisterPage() {
   const actionData = useActionData();
   const navigation = useNavigation();
   const { login } = useAuth();
 
-  console.log(actionData);
-
   if (actionData !== undefined && actionData.isComplete) {
-    console.log(actionData);
     login(actionData.user, actionData.token);
     return <Navigate to="/"></Navigate>;
   }

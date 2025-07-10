@@ -3,7 +3,6 @@ import { useLoaderData } from "react-router-dom";
 
 export default function NewestRecipesSection() {
   const recipes = useLoaderData();
-  console.log(recipes);
   return (
     <>
       <section>

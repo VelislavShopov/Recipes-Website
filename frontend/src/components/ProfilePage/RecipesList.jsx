@@ -1,16 +1,18 @@
-import { useLoaderData, useParams } from "react-router-dom";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 import { useState } from "react";
 import { deleteRecipeById } from "../../http requests/recipes";
 import { useAuth } from "../../context/AuthContext";
 
 export default function RecipesList() {
   const params = useParams();
+
   const { authData } = useAuth();
   const loaderData = useLoaderData();
-  const [recipes, setRecipes] = useState(loaderData.results);
+
+  const [recipes, setRecipes] = useState(loaderData.recipes.results);
+  const [profileData, setProfileData] = useState(loaderData.profile);
+
   const auth = authData.user.username === params.username;
-  console.log(authData.user);
-  console.log(auth);
 
   function handleDeleteRecipe(recipeId) {
     deleteRecipeById(recipeId);
@@ -20,13 +22,22 @@ export default function RecipesList() {
   }
 
   return (
-    <section>
+    <div>
+      <h1>
+        {authData.user.username === params.username
+          ? "My"
+          : `${params.username}'s`}{" "}
+        Recipes
+      </h1>
+      {authData.user.username === params.username && (
+        <Link to="/recipes/add">Add</Link>
+      )}
       {recipes !== null &&
         recipes.map((recipe) => (
           <div key={recipe.id}>
             <img src={recipe.image} style={{ maxHeight: "5rem" }} />
             <div>
-              <h2>{recipe.name}</h2>
+              <Link to={`/recipes/${recipe.slug}`}>{recipe.name}</Link>
               <p>{recipe.publication_date}</p>
               {auth && (
                 <button onClick={() => handleDeleteRecipe(recipe.id)}>X</button>
@@ -34,6 +45,6 @@ export default function RecipesList() {
             </div>
           </div>
         ))}
-    </section>
+    </div>
   );
 }

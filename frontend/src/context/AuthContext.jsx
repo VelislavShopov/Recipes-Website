@@ -20,6 +20,8 @@ export const AuthProvider = ({ children }) => {
             token: token,
             user: userTemp.data,
           });
+        } else {
+          setAuthData(null);
         }
       }
 

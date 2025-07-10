@@ -23,5 +23,4 @@ class EmailBackend(BaseBackend):
 
 
     def user_can_authenticate(self,user):
-
         return getattr(user,'is_active',True)

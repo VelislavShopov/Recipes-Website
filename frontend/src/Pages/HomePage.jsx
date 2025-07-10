@@ -4,7 +4,7 @@ import { store } from "../store/store";
 import NewestRecipesSection from "../components/HomePage/NewestRecipesSection";
 import BestRecipesSection from "../components/HomePage/BestRecipesSection";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <BestRecipesSection></BestRecipesSection>

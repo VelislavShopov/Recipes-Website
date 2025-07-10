@@ -6,7 +6,6 @@ import { useAuth } from "../../context/AuthContext";
 
 export default function Nav() {
   const { logout, authData } = useAuth();
-  console.log(authData);
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -22,13 +21,11 @@ export default function Nav() {
         </h1>
         <div className={classes.links_div}>
           <Link to="">Home</Link>
-          <Link to="recipes">Recipes</Link>
+          <Link to="recipes">Browse</Link>
           {authData === null && <Link to="login">Login</Link>}
           {authData && authData.isAuthenticated && (
             <>
-              <Link to={`users/${authData.user.username}/recipes/`}>
-                My Recipes
-              </Link>
+              <Link to={`users/${authData.user.username}/`}>Profile</Link>
               <button onClick={handleLogout}>Log out</button>
             </>
           )}

@@ -11,19 +11,23 @@ from recipes.mixins import UserMixin, PublicationMixin
 class Recipe(UserMixin,PublicationMixin):
     name = models.CharField(max_length=100)
     ingredients = models.ManyToManyField("Ingredient", blank=True)
-    type_dish = models.CharField(max_length=50)
+    class TypeDishChoices(models.TextChoices):
+        SALAD = "salad"
+        SOUP = "soup"
+        MAIN = "main"
+        DESSERT = "dessert"
+    type_dish = models.CharField(max_length=50,choices=TypeDishChoices)
     image = models.ImageField(upload_to="recipes/images/")
 
     description = models.TextField()
 
     slug = models.SlugField(unique=True)
 
-    class TypeDishChoices(models.TextChoices):
-        SALAD = "salad"
-        SOUP = "soup"
-        MAIN = "main"
-        DESSERT = "dessert"
 
+
+
+    def __str__(self):
+        return self.name
 
 
     @property
@@ -35,7 +39,10 @@ class Recipe(UserMixin,PublicationMixin):
         return self.ratings.count()
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Rating(UserMixin,PublicationMixin):

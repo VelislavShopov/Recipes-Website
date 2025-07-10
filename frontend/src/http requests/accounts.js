@@ -8,7 +8,6 @@ export default async function registerUser(formData) {
     username: formData.get("username"),
     email: formData.get("email"),
     password: formData.get("password1"),
-    country: "Bulgaria",
   };
 
   try {
@@ -31,4 +30,33 @@ export async function fetchUserData(token) {
   } catch (e) {
     console.log(e);
   }
+}
+
+export async function fetchProfileByUser(username) {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(
+    `${DEFAULT_URL}/accounts/profiles/${username}/`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function fetchUserDataByUsername(username) {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.get(
+    `${DEFAULT_URL}/accounts/retrieve/${username}/`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
+
+  return response.data;
 }

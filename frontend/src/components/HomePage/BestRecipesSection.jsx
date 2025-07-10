@@ -34,6 +34,7 @@ export default function BestRecipesSection() {
                 {recipe.name}
               </Link>
               <div>
+                <p>{recipe.avg_stars}/5</p>
                 <p>{recipe.user.username}</p>
                 <p>{recipe.publication_date}</p>
               </div>

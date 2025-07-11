@@ -5,7 +5,7 @@ from rest_framework.fields import SerializerMethodField
 from rest_framework.validators import UniqueTogetherValidator
 
 from recipes.models import Recipe, Ingredient, Rating
-from accounts.serializers import CustomUserUsername
+from accounts.serializers import CustomUserWithProfile
 from recipes.utils import create_slug_for_recipe, suffix_of_day
 
 
@@ -34,14 +34,9 @@ class RecipeSerializer(serializers.ModelSerializer):
         suffix = suffix_of_day(publication_date_time.day)
         return publication_date_time.strftime(f"%H:%M, %d{suffix} %B %Y")
 
-
-
-
-
-
     ratings = RatingSerializer(many=True, read_only=True)
     ingredients = IngredientSerializer(many=True, read_only=True)
-    user = CustomUserUsername(read_only=True)
+    user = CustomUserWithProfile(read_only=True)
     avg_stars = SerializerMethodField()
 
     def get_avg_stars(self, obj):
@@ -62,8 +57,3 @@ class RecipeSerializer(serializers.ModelSerializer):
         validated_data['slug'] = create_slug_for_recipe(validated_data.get('name'))
         return super().create(validated_data)
 
-
-class RecipeShortSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Recipe
-        fields = ('id','name','description','image','publication_date_time',)

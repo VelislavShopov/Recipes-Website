@@ -1,8 +1,7 @@
-import { fetchNewestRecipes } from "../http requests/recipes";
-import { store } from "../store/store";
+import { fetchNewestRecipes } from "../../http requests/recipes";
 
-import NewestRecipesSection from "../components/HomePage/NewestRecipesSection";
-import BestRecipesSection from "../components/HomePage/BestRecipesSection";
+import NewestRecipesSection from "../../components/HomePage/NewestRecipesSection";
+import BestRecipesSection from "../../components/HomePage/BestRecipesSection";
 
 export default function HomePage() {
   return (

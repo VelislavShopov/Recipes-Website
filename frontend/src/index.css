@@ -4,3 +4,11 @@
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
+
+body {
+  background-color: #ecfae5;
+}
+
+main {
+  min-height: 36.3rem;
+}

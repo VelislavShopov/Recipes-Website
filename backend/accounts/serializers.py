@@ -33,10 +33,6 @@ class CustomAuthTokenSerializer(serializers.Serializer):
         return attrs
 
 
-
-
-
-
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
@@ -53,14 +49,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         exclude = ('user',)
 
 
-class ShortProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ('picture','country')
-
-
-class CustomUserUsername(serializers.ModelSerializer):
-    profile = ShortProfileSerializer(read_only=True)
+class CustomUserWithProfile(serializers.ModelSerializer):
+    profile = ProfileSerializer(read_only=True)
     class Meta:
         model = UserModel
         fields = ('username','profile')

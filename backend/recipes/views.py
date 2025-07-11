@@ -51,9 +51,8 @@ class DestroyRecipeView(DestroyAPIView):
 
 class NewestRecipesListView(ListAPIView):
     serializer_class = RecipeSerializer
-    pagination_class = None
     def get_queryset(self):
-        return Recipe.objects.all().order_by('-publication_date_time')[:10]
+        return Recipe.objects.all().order_by('-publication_date_time')
 
 class BestRatedRecipesListView(ListAPIView):
     serializer_class = RecipeSerializer

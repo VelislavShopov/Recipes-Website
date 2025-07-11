@@ -17,8 +17,18 @@ class Recipe(UserMixin,PublicationMixin):
         SOUP = "soup"
         MAIN = "main"
         DESSERT = "dessert"
-
     type_dish = models.CharField(max_length=50,choices=TypeDishChoices)
+
+    class CookingTimeChoices(models.TextChoices):
+        ONE_FIVE_MINUTES = "1-5 minutes"
+        FIVE_TEN_MINUTES = "5-10 minutes"
+        TEN_FIFTEEN_MINUTES = "10-15 minutes"
+        FIFTEEN_TWENTY_MINUTES = "15-20 minutes"
+        TWENTY_THIRTY_MINUTES = "20-30 minutes"
+        THIRTY_FORTYFIVE_MINUTES = "30-45 minutes"
+        FOURTYFIVE_SIXTY_MINUTES = "45-60 minutes"
+
+    cooking_time = models.CharField(max_length=50,choices=CookingTimeChoices,default=CookingTimeChoices.ONE_FIVE_MINUTES)
     image = models.ImageField(upload_to="recipes/images/")
     description = models.TextField()
 
@@ -38,6 +48,17 @@ class Recipe(UserMixin,PublicationMixin):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=100,unique=True)
+
+    class IngredientType(models.TextChoices):
+        MEAT_FISH = "Meat & Fish"
+        DAIRY_EGGS = "Dairy & Eggs"
+        VEGETABLES = "Vegetables"
+        FRUITS = "Fruits"
+        GRAINS_CEREALS = "Grains & Cereals"
+        OILS_FATS = "Oils & Fats"
+        SPICES_SEASONINGS = "Spices & Seasonings"
+
+    category = models.CharField(max_length=100,choices=IngredientType,default=IngredientType.MEAT_FISH)
 
     def __str__(self):
         return self.name

@@ -1,30 +1,11 @@
-.best_recipes_section {
-  padding-top: 1rem;
-  padding-inline: 4rem;
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin: 3rem 15rem;
 }
 
 .h1 {
   font-size: 3rem;
-  padding-bottom: 2rem;
-}
-
-.recipe_container {
-  display: flex;
-  gap: 3rem;
-}
-
-.recipe_img {
-  max-height: 20rem;
-  max-width: 30rem;
-}
-
-.recipe_info_container {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  align-self: center;
-}
-
-.recipe_title {
-  margin-bottom: 2rem;
+  text-align: center;
 }

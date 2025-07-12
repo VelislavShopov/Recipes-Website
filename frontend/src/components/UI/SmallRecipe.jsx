@@ -9,11 +9,12 @@ export default function SmallRecipe({ recipe, ...props }) {
       <img src={recipe.image} className={classes.recipe_img} alt="recipe" />
       <div className={classes.recipe_info_container}>
         <div className={classes.recipe_name}>
-          <Link to={`recipes/${recipe.slug}`}>{recipe.name}</Link>
+          <Link to={`/recipes/${recipe.slug}`}>{recipe.name}</Link>
         </div>
         <hr></hr>
         <div className={classes.additional_info_container}>
           <p>Ingredients: {ingredientNames.join(", ")}</p>
+          <hr></hr>
           <p>Cooking time: {recipe.cooking_time}</p>
         </div>
         <hr></hr>

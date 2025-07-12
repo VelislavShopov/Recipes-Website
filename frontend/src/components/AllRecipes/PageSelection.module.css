@@ -1,0 +1,26 @@
+.container {
+  justify-self: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.container .button {
+  font-size: 1rem;
+  background-color: #ecfae5;
+  border: 2px solid #b0db9c;
+  border-radius: 5rem;
+  padding: 0.5rem;
+}
+
+.button.disabled {
+  background-color: #b0db9c;
+}
+
+.container p {
+  align-self: center;
+}
+
+.container .button:hover:not(.disabled) {
+  cursor: pointer;
+  background-color: #cae8bd;
+}

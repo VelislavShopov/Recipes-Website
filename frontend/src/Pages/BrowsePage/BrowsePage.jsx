@@ -1,15 +1,17 @@
-import { useLoaderData, useParams, useSearchParams } from "react-router-dom";
-import AllRecipesAside from "../components/AllRecipes/AllRecipesAside";
-import AllRecipesSection from "../components/AllRecipes/AllRecipesSection";
-import { fetchRecipes } from "../http requests/recipes";
-import { useState } from "react";
-import SearchRecipe from "../components/AllRecipes/SearchRecipe";
+import { useLoaderData, useSearchParams } from "react-router-dom";
+import AllRecipesAside from "../../components/AllRecipes/AllRecipesAside";
+import AllRecipesSection from "../../components/AllRecipes/AllRecipesSection";
+import { fetchRecipes } from "../../http requests/recipes";
+import { useState, useEffect } from "react";
+import SearchRecipe from "../../components/AllRecipes/SearchRecipe";
+import classes from "./BrowsePage.module.css";
 
 export default function BrowsePage() {
   const loaderData = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
   const [recipes, setRecipes] = useState(loaderData.recipes);
   const [filters, setFilters] = useState(loaderData.filters);
+  const [page, setPage] = useState(searchParams.get("page"));
 
   async function handleClearFilter() {
     setFilters({});
@@ -67,7 +69,15 @@ export default function BrowsePage() {
     const response = await fetchRecipes(searchParams);
     setRecipes(response);
     setSearchParams(searchParams);
+    setPage(page);
   }
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [page]);
 
   async function handleSearchRecipes(value) {
     searchParams.set("q", value);
@@ -77,18 +87,22 @@ export default function BrowsePage() {
   }
 
   return (
-    <>
-      <AllRecipesAside
-        filters={filters}
-        handleRecipesFilter={handleRecipesFilter}
-        handleClearFilter={handleClearFilter}
-      ></AllRecipesAside>
-      <SearchRecipe handleSearchRecipes={handleSearchRecipes}></SearchRecipe>
-      <AllRecipesSection
-        recipes={recipes}
-        handlePageChange={handlePageChange}
-      ></AllRecipesSection>
-    </>
+    <div className={classes.container}>
+      <h1 className={classes.h1}>Browse Recipes</h1>
+      <div className={classes.container_grid}>
+        <AllRecipesAside
+          count={recipes.count}
+          filters={filters}
+          handleRecipesFilter={handleRecipesFilter}
+          handleClearFilter={handleClearFilter}
+        ></AllRecipesAside>
+        <SearchRecipe handleSearchRecipes={handleSearchRecipes}></SearchRecipe>
+        <AllRecipesSection
+          recipes={recipes}
+          handlePageChange={handlePageChange}
+        ></AllRecipesSection>
+      </div>
+    </div>
   );
 }
 

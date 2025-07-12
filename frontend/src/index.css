@@ -12,3 +12,8 @@ body {
 main {
   min-height: 36.3rem;
 }
+
+h1 {
+  font-size: 3rem;
+  text-align: center;
+}

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import classes from "./PageSelection.module.css";
 
 export function PageSelection({ recipes, handlePageChange }) {
   const [pages, setPages] = useState([]);
@@ -53,12 +54,19 @@ export function PageSelection({ recipes, handlePageChange }) {
   }, [recipes]);
 
   return (
-    <div>
+    <div className={classes.container}>
       {pages.map((page) => {
         if (Number.isInteger(page)) {
           const disabled = page === recipes.current_page;
+          const className = disabled
+            ? `${classes.button} ${classes.disabled}`
+            : classes.button;
           return (
-            <button onClick={() => handlePageChange(page)} disabled={disabled}>
+            <button
+              onClick={() => handlePageChange(page)}
+              className={className}
+              disabled={disabled}
+            >
               {page}
             </button>
           );

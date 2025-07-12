@@ -2,19 +2,19 @@ import { createBrowserRouter } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 
 import Layout from "./Pages/Layout/Layout.jsx";
-import LoginPage from "./Pages/LoginPage";
-import RegisterPage from "./Pages/RegisterPage";
+import LoginPage from "./Pages/LoginPage/LoginPage.jsx";
+import RegisterPage from "./Pages/RegisterPage/RegisterPage.jsx";
 import ProfilePage from "./Pages/ProfilePage";
 import AddRecipePage from "./Pages/AddRecipePage";
 
 import { homeLoader } from "./Pages/HomePage/HomePage.jsx";
-import { loginAction } from "./Pages/LoginPage";
-import { registerAction } from "./Pages/RegisterPage";
+import { loginAction } from "./Pages/LoginPage/LoginPage.jsx";
+import { registerAction } from "./Pages/RegisterPage/RegisterPage.jsx";
 import { profileLoader } from "./Pages/ProfilePage";
 import { addRecipeLoader } from "./Pages/AddRecipePage";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/Authorization/ProtectedRoute";
-import BrowsePage, { browseLoader } from "./Pages/BrowsePage";
+import BrowsePage, { browseLoader } from "./Pages/BrowsePage/BrowsePage.jsx";
 import { addRecipeAction } from "./components/AddRecipe/AddRecipeSection";
 import RecipeDetailPage, { recipeDetailLoader } from "./Pages/RecipeDetailPage";
 import HomePage from "./Pages/HomePage/HomePage.jsx";

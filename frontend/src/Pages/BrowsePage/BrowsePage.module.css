@@ -1,0 +1,15 @@
+.container {
+  margin-top: 3rem;
+  margin-inline: 10rem;
+  margin-bottom: 3rem;
+}
+
+.h1 {
+  margin-bottom: 3rem;
+}
+
+.container_grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1.3fr 4fr;
+}

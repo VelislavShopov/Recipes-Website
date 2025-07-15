@@ -53,4 +53,4 @@ class CustomUserWithProfile(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)
     class Meta:
         model = UserModel
-        fields = ('username','profile')
+        fields = '__all__'

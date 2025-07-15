@@ -94,7 +94,7 @@ export default function AddRecipeSection() {
         <div>
           <label>Description:</label>
           {errors && errors.description && <p>Please provide a description</p>}
-          <input name="description"></input>
+          <textarea name="description" type=""></textarea>
         </div>
         <button>Create</button>
       </Form>

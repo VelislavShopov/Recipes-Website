@@ -1,9 +1,13 @@
 import json
 
 from django.contrib.auth import get_user_model
+from rest_framework import status
 from rest_framework.generics import ListAPIView, get_object_or_404, DestroyAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from accounts.permissions import RecipeOfUserPermission
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from accounts.permissions import ObjectOfUserPermission
 from .models import Recipe, Ingredient, Rating
 from .serializers import RecipeSerializer, IngredientSerializer, RatingSerializer
 from .utils import get_best_recipes, create_filters_dict
@@ -37,9 +41,7 @@ class RecipeListView(ListAPIView):
 
     def get_queryset(self):
         filters = create_filters_dict(self.request)
-        print(filters)
         recipes = Recipe.objects.filter(**filters)
-        print(recipes)
         return recipes
 
 
@@ -47,12 +49,16 @@ class RecipeListView(ListAPIView):
 class DestroyRecipeView(DestroyAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    permission_classes = (IsAuthenticated,RecipeOfUserPermission)
+    permission_classes = (IsAuthenticated,ObjectOfUserPermission)
 
 class NewestRecipesListView(ListAPIView):
     serializer_class = RecipeSerializer
     def get_queryset(self):
         return Recipe.objects.all().order_by('-publication_date_time')
+
+    def get_paginated_response(self, data):
+        self.paginator.page_size=9
+        return super().get_paginated_response(data)
 
 class BestRatedRecipesListView(ListAPIView):
     serializer_class = RecipeSerializer
@@ -84,3 +90,34 @@ class IngredientsListView(ListAPIView):
 class CreateRatingView(CreateAPIView):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
+
+class LongestCookingTimeView(APIView):
+    def get(self, request, *args, **kwargs):
+        longest_recipe = Recipe.objects.order_by('-cooking_time').first()
+        return Response({'max_value': int(longest_recipe.cooking_time)})
+
+
+class CreateRatingForRecipeView(CreateAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def create(self, request, *args, **kwargs):
+        recipe = get_object_or_404(Recipe, slug=kwargs['slug'])
+        serializer = self.get_serializer(
+            data=request.data,
+            context={
+                'request': request,
+                'user': request.user,
+                'recipe': recipe
+            }
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()  # calls create in serializer
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+class DestroyRatingView(DestroyAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer
+    permission_classes = (ObjectOfUserPermission,)

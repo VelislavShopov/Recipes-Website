@@ -24,7 +24,7 @@ class RatingAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ("Info", {'fields': ('recipe','user')}),
-        ('Review', {'fields': ('stars','comment')}),
+        ('Review', {'fields': ('stars',)}),
     )
 
     def get_readonly_fields(self, request, obj=None):

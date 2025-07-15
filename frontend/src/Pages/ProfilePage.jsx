@@ -20,13 +20,17 @@ export default function ProfilePage() {
 }
 
 export async function profileLoader({ request, params }) {
-  const recipes = await fetchRecipesByUser(params.username);
-  const profile = await fetchProfileByUser(params.username);
-  const user = await fetchUserDataByUsername(params.username);
-  console.log(profile);
-  return {
-    recipes,
-    profile,
-    user,
-  };
+  try {
+    const recipes = await fetchRecipesByUser(params.username);
+    const profile = await fetchProfileByUser(params.username);
+    const user = await fetchUserDataByUsername(params.username);
+    console.log(profile);
+    return {
+      recipes,
+      profile,
+      user,
+    };
+  } catch (err) {
+    return err;
+  }
 }

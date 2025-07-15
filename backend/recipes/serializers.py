@@ -18,12 +18,12 @@ class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = '__all__'
-        validators = [
-            UniqueTogetherValidator(
-                queryset=Rating.objects.all(),
-                fields=['user', 'recipe'],
-            )
-        ]
+        read_only_fields = ('user','recipe')
+
+    def create(self, validated_data):
+        user = self.context['user']
+        recipe = self.context['recipe']
+        return Rating.objects.create(user=user, recipe=recipe, **validated_data)
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -56,4 +56,3 @@ class RecipeSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['slug'] = create_slug_for_recipe(validated_data.get('name'))
         return super().create(validated_data)
-

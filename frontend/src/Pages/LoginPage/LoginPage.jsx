@@ -1,5 +1,6 @@
 import {
   Link,
+  Navigate,
   useActionData,
   useLocation,
   useNavigate,
@@ -14,18 +15,16 @@ import classes from "./LoginPage.module.css";
 
 export default function LoginPage() {
   const navigation = useNavigation();
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
+
   const actionData = useActionData();
   const navigate = useNavigate();
-  const location = useLocation();
+
+  const lastLocation = localStorage.getItem("lastVisitedPath") || "/";
 
   const [errors, setErrors] = useState(null);
-  const [redirectPath, setRedirectPath] = useState(
-    location.state?.from?.pathname || "/"
-  );
+  const [redirectPath, setRedirectPath] = useState(lastLocation);
   const [loginProcessed, setLogInProcessed] = useState(false);
-
-  console.log(actionData);
 
   useEffect(() => {
     if (navigation.state === "submitting") {
@@ -41,11 +40,15 @@ export default function LoginPage() {
         navigate(redirectPath, { replace: true });
       }
     }
-  }, [actionData, login, navigate, navigation.state, location, loginProcessed]);
+  }, [actionData, login, navigate, navigation.state, loginProcessed]);
 
   let formClasses = classes.form;
   if (navigation.state === "submitting" || errors !== null) {
     formClasses = `${classes.form} ${classes.bigger_form}`;
+  }
+
+  if (isAuthenticated()) {
+    return <Navigate to="/" />;
   }
 
   return (

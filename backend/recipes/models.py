@@ -19,16 +19,7 @@ class Recipe(UserMixin,PublicationMixin):
         DESSERT = "dessert"
     type_dish = models.CharField(max_length=50,choices=TypeDishChoices)
 
-    class CookingTimeChoices(models.TextChoices):
-        ONE_FIVE_MINUTES = "1-5 minutes"
-        FIVE_TEN_MINUTES = "5-10 minutes"
-        TEN_FIFTEEN_MINUTES = "10-15 minutes"
-        FIFTEEN_TWENTY_MINUTES = "15-20 minutes"
-        TWENTY_THIRTY_MINUTES = "20-30 minutes"
-        THIRTY_FORTYFIVE_MINUTES = "30-45 minutes"
-        FOURTYFIVE_SIXTY_MINUTES = "45-60 minutes"
-
-    cooking_time = models.CharField(max_length=50,choices=CookingTimeChoices,default=CookingTimeChoices.ONE_FIVE_MINUTES)
+    cooking_time = models.PositiveIntegerField(max_length=50,default=5)
     image = models.ImageField(upload_to="recipes/images/")
     description = models.TextField()
 
@@ -66,7 +57,6 @@ class Ingredient(models.Model):
 
 class Rating(UserMixin,PublicationMixin):
     stars = models.DecimalField(decimal_places=1, max_digits=2,validators=[MinValueValidator(0.0),MaxValueValidator(5.0)])
-    comment = models.TextField(blank=True,null=True)
     recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE,related_name="ratings")
 
     class Meta:

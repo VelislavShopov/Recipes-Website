@@ -56,3 +56,37 @@ export async function fetchRecipeBySlug(slug) {
 
   return response.data;
 }
+
+export async function fetchLongestCookingTime() {
+  const response = await axios.get(
+    `${DEFAULT_URL}/recipes/longest-cooking-time`
+  );
+  return response.data;
+}
+
+export async function createRatingForRecipe(stars, recipe_slug) {
+  const token = localStorage.getItem("token");
+  const response = await axios.post(
+    `${DEFAULT_URL}/recipes/${recipe_slug}/ratings/create/`,
+    { stars },
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function deleteRatingById(id, recipe_slug) {
+  const token = localStorage.getItem("token");
+  const response = await axios.delete(
+    `${DEFAULT_URL}/recipes/${recipe_slug}/ratings/${id}/delete/`,
+    {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }
+  );
+}

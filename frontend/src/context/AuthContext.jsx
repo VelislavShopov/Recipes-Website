@@ -57,7 +57,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAuthenticated = () => {
-    return authData && authData.isAuthenticated;
+    if (authData && authData.isAuthenticated) {
+      return true;
+    }
+
+    return false;
   };
 
   const getAccessToken = () => {

@@ -28,7 +28,7 @@ def create_filters_dict(request):
     filters = {}
     query_params = request.GET
     for key in query_params:
-        if key in ['page', 'ordering','q']:  # ignore pagination or other keys
+        if key in ['page', 'ordering','q','min_range','max_range']:  # ignore pagination or other keys
             continue
 
         values = query_params.getlist(key)
@@ -38,6 +38,12 @@ def create_filters_dict(request):
 
     if "q" in query_params:
         filters["name__icontains"] = query_params["q"]
+
+    if "min_range" in query_params:
+        filters["cooking_time__gte"] = query_params["min_range"]
+
+    if "max_range" in query_params:
+        filters["cooking_time__lte"] = query_params["max_range"]
 
     return filters
 

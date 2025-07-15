@@ -1,4 +1,6 @@
 import { TYPE_DISH } from "../../utils/dish_info";
+import { COOKING_TIME } from "../../utils/dish_info";
+import RangeSlider from "../UI/RangeSlider";
 import classes from "./AllRecipesAside.module.css";
 
 export default function AllRecipesAside({
@@ -6,6 +8,7 @@ export default function AllRecipesAside({
   filters,
   handleRecipesFilter,
   handleClearFilter,
+  sliderRef,
 }) {
   return (
     <aside className={classes.aside}>
@@ -42,8 +45,16 @@ export default function AllRecipesAside({
             );
           })}
         </ul>
-        <hr></hr>
       </div>
+      <hr></hr>
+      <div>
+        <h3>Cooking Time:</h3>
+        <RangeSlider
+          handleRecipesFilter={handleRecipesFilter}
+          ref={sliderRef}
+        ></RangeSlider>
+      </div>
+      <hr></hr>
     </aside>
   );
 }

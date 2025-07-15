@@ -15,7 +15,7 @@ export default function SmallRecipe({ recipe, ...props }) {
         <div className={classes.additional_info_container}>
           <p>Ingredients: {ingredientNames.join(", ")}</p>
           <hr></hr>
-          <p>Cooking time: {recipe.cooking_time}</p>
+          <p>Cooking time: {recipe.cooking_time} minutes</p>
         </div>
         <hr></hr>
         <div>
@@ -28,12 +28,32 @@ export default function SmallRecipe({ recipe, ...props }) {
               src={recipe.user.profile.picture}
               style={{ maxHeight: "3rem" }}
             ></img>
-            <Link to={`users/${recipe.user.username}`}>
+            <Link to={`/users/${recipe.user.username}`}>
               {recipe.user.username}
             </Link>
           </div>
           <div className={classes.details_button_container}>
-            <Link to={`recipes/${recipe.slug}`}>More Details...</Link>
+            <Link
+              to={`/recipes/${recipe.slug}`}
+              className={classes.animated_button}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className={classes.arr_2}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+              </svg>
+              <span className={classes.text}>Details...</span>
+              <span className={classes.circle}></span>
+              <svg
+                viewBox="0 0 24 24"
+                className={classes.arr_1}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+              </svg>
+            </Link>
           </div>
         </div>
       </div>

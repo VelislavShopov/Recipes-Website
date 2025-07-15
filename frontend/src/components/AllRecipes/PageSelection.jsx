@@ -63,6 +63,7 @@ export function PageSelection({ recipes, handlePageChange }) {
             : classes.button;
           return (
             <button
+              key={page}
               onClick={() => handlePageChange(page)}
               className={className}
               disabled={disabled}

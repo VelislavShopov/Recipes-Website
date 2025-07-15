@@ -2,6 +2,10 @@
   padding-top: 1rem;
   padding-bottom: 1rem;
   background-color: #b0db9c;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
 }
 
 .ul {

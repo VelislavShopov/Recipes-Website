@@ -17,7 +17,7 @@ export default function AllRecipesSection({ recipes, handlePageChange }) {
     <section className={classes.section}>
       <div className={classes.recipes_container}>
         {results.map((recipe) => (
-          <SmallRecipe recipe={recipe}></SmallRecipe>
+          <SmallRecipe key={recipe.name} recipe={recipe}></SmallRecipe>
         ))}
       </div>
 

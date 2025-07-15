@@ -2,7 +2,8 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from recipes import views
-from recipes.views import DestroyRecipeView, RecipeListView, IngredientsListView, CreateRecipe, RetrieveRecipeBySlug
+from recipes.views import DestroyRecipeView, RecipeListView, IngredientsListView, CreateRecipe, RetrieveRecipeBySlug, \
+    CreateRatingForRecipeView, DestroyRatingView
 
 urlpatterns = [
     path('', RecipeListView.as_view()),
@@ -14,6 +15,16 @@ urlpatterns = [
     path('<int:pk>/', include([
         path('delete/', DestroyRecipeView.as_view()),
     ])),
+    path('longest-cooking-time/', views.LongestCookingTimeView.as_view()),
     path('ingredients/', IngredientsListView.as_view()),
-    path('<slug:slug>/', RetrieveRecipeBySlug.as_view()),
+    path('<slug:slug>/', include([
+        path('',RetrieveRecipeBySlug.as_view()),
+        path('ratings/', include([
+            path('create/', CreateRatingForRecipeView.as_view()),
+            path( '<int:pk>/', include([
+                path('delete/', DestroyRatingView.as_view()),
+            ])),
+        ])),
+
+    ])),
 ]

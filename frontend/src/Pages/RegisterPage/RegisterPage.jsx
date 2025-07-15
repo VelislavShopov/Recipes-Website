@@ -13,11 +13,15 @@ import classes from "./RegisterPage.module.css";
 export default function RegisterPage() {
   const actionData = useActionData();
   const navigation = useNavigation();
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
 
   if (actionData !== undefined && actionData.isComplete) {
     login(actionData.user, actionData.token);
     return <Navigate to="/"></Navigate>;
+  }
+
+  if (isAuthenticated()) {
+    return <Navigate to="/" />;
   }
 
   return (

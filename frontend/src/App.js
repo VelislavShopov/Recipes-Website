@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useLocation } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 
 import Layout from "./Pages/Layout/Layout.jsx";
@@ -18,6 +18,7 @@ import BrowsePage, { browseLoader } from "./Pages/BrowsePage/BrowsePage.jsx";
 import { addRecipeAction } from "./components/AddRecipe/AddRecipeSection";
 import RecipeDetailPage, { recipeDetailLoader } from "./Pages/RecipeDetailPage";
 import HomePage from "./Pages/HomePage/HomePage.jsx";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {

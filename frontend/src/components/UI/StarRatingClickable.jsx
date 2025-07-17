@@ -33,7 +33,12 @@ export default function StarRatingClickable({ recipe, setIsRated, setRecipe }) {
           onMouseEnter={() => handleMouseEnter(star)}
           onMouseLeave={handleMouseLeave}
           onClick={() => handleClick(star)}
-          style={{ cursor: "pointer", color: "#f4c542" }} // adjust colour if needed
+          style={{
+            cursor: "pointer",
+            color: "#f4c542",
+            height: "1.5rem",
+            marginLeft: "0.2rem",
+          }} // adjust colour if needed
         />
       ))}
     </div>

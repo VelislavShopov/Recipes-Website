@@ -71,8 +71,7 @@ export default function BrowsePage() {
         updatedFilters[filterKey] = [filterValue];
       }
     }
-    console.log(updatedFilters);
-    console.log(rangeFilters);
+
     const newSearchParams = new URLSearchParams();
     Object.entries(updatedFilters).forEach(([key, valueArray]) => {
       valueArray.forEach((v) => newSearchParams.append(key, v));
@@ -91,8 +90,6 @@ export default function BrowsePage() {
         newSearchParams.append("max_range", rangeFilters.max_range);
       }
     }
-
-    console.log(newSearchParams);
 
     setSearchParams(newSearchParams);
 

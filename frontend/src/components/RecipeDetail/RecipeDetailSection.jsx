@@ -1,20 +1,61 @@
 import { useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import classes from "./RecipeDetailSection.module.css";
-import StarRating from "../UI/StarRating";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar as solidStar } from "@fortawesome/free-regular-svg-icons";
 import RatingsSection from "./RatingsSection";
+import { useAuth } from "../../context/AuthContext";
+import EditButton from "../UI/EditButton";
+import SubmitButton from "../UI/SubmitButton";
 
 export default function RecipeDetailSection() {
   const loaderData = useLoaderData();
   const [recipe, setRecipe] = useState(loaderData);
 
+  const { authData } = useAuth();
+
+  const [isUserOwned, setIsUserOwned] = useState(
+    authData !== null && recipe.user.id === authData.user.id
+  );
+
+  const [isEditing, setIsEditing] = useState(false);
+  function handleSubmit() {
+    setIsEditing(false);
+  }
+
+  function handleChange(e, type) {
+    setRecipe((prev) => {
+      return {
+        ...prev,
+        [type]: e.target.value,
+      };
+    });
+  }
+
+  console.log(recipe);
+
   return (
     <>
       <section className={classes.section}>
         <div className={classes.titleuser_container}>
-          <h1 className={classes.h1}>{recipe.name}</h1>
+          <div>
+            {!isEditing && <h1 className={classes.h1}>{recipe.name}</h1>}
+            {isEditing && (
+              <input
+                className={classes.input_h1}
+                value={recipe.name}
+                onChange={(e) => handleChange(e, "name")}
+              ></input>
+            )}
+            {isUserOwned && (
+              <div>
+                {!isEditing && (
+                  <EditButton onClick={() => setIsEditing(true)}></EditButton>
+                )}
+                {isEditing && (
+                  <SubmitButton onClick={() => handleSubmit()}></SubmitButton>
+                )}
+              </div>
+            )}
+          </div>
           <div>
             <p>{recipe.publication_date_time}</p>
             <div className={classes.userinfo_container}>
@@ -34,7 +75,7 @@ export default function RecipeDetailSection() {
           <ol>
             {recipe.ingredients.map((item, index) => {
               return (
-                <li>
+                <li key={index + 1}>
                   {index + 1}. {item.name}
                 </li>
               );
@@ -43,7 +84,14 @@ export default function RecipeDetailSection() {
         </div>
         <div className={classes.instructions_container}>
           <h2 className={classes.h2}>Instructions:</h2>
-          <p>{recipe.description}</p>
+          {!isEditing && <p>{recipe.description}</p>}
+          {isEditing && (
+            <textarea
+              className={classes.textarea_description}
+              value={recipe.description}
+              onChange={(e) => handleChange(e, "description")}
+            ></textarea>
+          )}
         </div>
       </section>
       <hr></hr>

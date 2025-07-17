@@ -5,6 +5,9 @@ import classes from "./Layout.module.css";
 import { useEffect } from "react";
 export default function Layout() {
   const location = useLocation();
+  window.scrollTo({
+    top: 0,
+  });
 
   useEffect(() => {
     localStorage.setItem("lastVisitedPath", location.pathname);

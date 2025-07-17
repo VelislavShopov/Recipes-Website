@@ -13,22 +13,20 @@ export default function Nav() {
 
   return (
     <nav className={classes.nav}>
-      <ul className={classes.ul}>
-        <div className={classes.title_div}>
-          <Link to="">Chef's List</Link>
-        </div>
-        <div className={classes.links_div}>
-          <Link to="">Home</Link>
-          <Link to="recipes">Browse</Link>
-          {authData === null && <Link to="login">Login</Link>}
-          {authData && authData.isAuthenticated && (
-            <>
-              <Link to={`users/${authData.user.username}/`}>Profile</Link>
-              <button onClick={handleLogout}>Log out</button>
-            </>
-          )}
-        </div>
-      </ul>
+      <div className={classes.title_div}>
+        <Link to="">Chef's List</Link>
+      </div>
+      <div className={classes.links_div}>
+        <Link to="">Home</Link>
+        <Link to="recipes">Browse</Link>
+        {authData === null && <Link to="login">Login</Link>}
+        {authData && authData.isAuthenticated && (
+          <>
+            <Link to={`users/${authData.user.username}/`}>Profile</Link>
+            <button onClick={handleLogout}>Log out</button>
+          </>
+        )}
+      </div>
     </nav>
   );
 }

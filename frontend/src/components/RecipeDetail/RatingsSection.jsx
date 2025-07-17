@@ -11,6 +11,7 @@ import {
   fetchRecipeBySlug,
 } from "../../http requests/recipes";
 import DeleteButton from "../UI/DeleteButton";
+import SmallDeleteButton from "../UI/SmallDeleteButton";
 
 const STARS = ["5.0", "4.0", "3.0", "2.0", "1.0"];
 
@@ -30,7 +31,6 @@ export default function RatingsSection({ recipe, setRecipe }) {
       const userRated = recipe.ratings.filter(
         (item) => String(item.user) === String(authData.user.id)
       );
-      console.log(userRated);
       setIsRated(userRated.length === 0 ? null : userRated[0]);
     }
   }, [recipe, authData, authenticated]);
@@ -40,8 +40,6 @@ export default function RatingsSection({ recipe, setRecipe }) {
     setIsRated(null);
     setRecipe(await fetchRecipeBySlug(recipe.slug));
   }
-
-  console.log(isRated);
 
   return (
     <section className={classes.section}>
@@ -57,7 +55,7 @@ export default function RatingsSection({ recipe, setRecipe }) {
             count === 0 ? 0 : (count / recipe.ratings.length) * 100;
 
           return (
-            <div className={classes.star_container}>
+            <div className={classes.star_container} key={star}>
               <p>
                 {5 - i} <FontAwesomeIcon icon={solidStar}></FontAwesomeIcon>
               </p>
@@ -67,6 +65,7 @@ export default function RatingsSection({ recipe, setRecipe }) {
                   style={{
                     width: `${percentage}%`,
                     backgroundColor: "#ECFAE5",
+                    transition: "0.3s",
                   }}
                 >
                   {count}
@@ -101,10 +100,14 @@ export default function RatingsSection({ recipe, setRecipe }) {
               You have already rated with {isRated.stars[0]}
               <FontAwesomeIcon
                 icon={solidStar}
-                style={{ color: "gold" }}
+                style={{
+                  color: "gold",
+                  height: "1.5rem",
+                  marginLeft: "0.3rem",
+                }}
               ></FontAwesomeIcon>
             </p>
-            <DeleteButton onClick={handleReviewRemove}></DeleteButton>
+            <SmallDeleteButton onClick={handleReviewRemove}></SmallDeleteButton>
           </>
         )}
       </div>

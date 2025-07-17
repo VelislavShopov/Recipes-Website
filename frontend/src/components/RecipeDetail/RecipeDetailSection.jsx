@@ -5,6 +5,14 @@ import RatingsSection from "./RatingsSection";
 import { useAuth } from "../../context/AuthContext";
 import EditButton from "../UI/EditButton";
 import SubmitButton from "../UI/SubmitButton";
+import {
+  AddIngredientToRecipe,
+  deleteIngredientForRecipe,
+  patchRecipe,
+} from "../../http requests/recipes";
+import AddIngredient from "./AddIngredient";
+import SmallDeleteButton from "../UI/SmallDeleteButton";
+import UploadImage from "../UI/UploadImage";
 
 export default function RecipeDetailSection() {
   const loaderData = useLoaderData();
@@ -16,21 +24,65 @@ export default function RecipeDetailSection() {
     authData !== null && recipe.user.id === authData.user.id
   );
 
+  const [changedValues, setChangedValues] = useState(null);
+
   const [isEditing, setIsEditing] = useState(false);
-  function handleSubmit() {
+  async function handleSubmit() {
+    const response = await patchRecipe(recipe.id, changedValues);
+    setChangedValues(null);
     setIsEditing(false);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    setRecipe(response);
   }
 
   function handleChange(e, type) {
+    let value = e;
+
+    if (type !== "image") {
+      value = value.target.value;
+    }
+
+    setChangedValues((prev) => {
+      return {
+        ...prev,
+        [type]: value,
+      };
+    });
+
+    if (type !== "image") {
+      setRecipe((prev) => {
+        return {
+          ...prev,
+          [type]: e.target.value,
+        };
+      });
+    }
+  }
+
+  async function handleIngredientDeletion(itemId) {
+    const response = await deleteIngredientForRecipe(itemId, recipe.id);
     setRecipe((prev) => {
       return {
         ...prev,
-        [type]: e.target.value,
+        ingredients: prev.ingredients.filter((item) => item.id !== itemId),
       };
     });
   }
 
-  console.log(recipe);
+  async function handleAddIngredient(ingredient) {
+    const response = await AddIngredientToRecipe(ingredient.id, recipe.id);
+    setRecipe((prev) => {
+      return {
+        ...prev,
+        ingredients: [...prev.ingredients, ingredient],
+      };
+    });
+  }
+
+  console.log(changedValues);
 
   return (
     <>
@@ -50,9 +102,6 @@ export default function RecipeDetailSection() {
                 {!isEditing && (
                   <EditButton onClick={() => setIsEditing(true)}></EditButton>
                 )}
-                {isEditing && (
-                  <SubmitButton onClick={() => handleSubmit()}></SubmitButton>
-                )}
               </div>
             )}
           </div>
@@ -68,7 +117,11 @@ export default function RecipeDetailSection() {
           </div>
         </div>
         <hr></hr>
-        <img src={recipe.image} className={classes.recipe_img} />
+        {!isEditing && (
+          <img src={recipe.image} className={classes.recipe_img} />
+        )}
+        {isEditing && <UploadImage handleChange={handleChange}></UploadImage>}
+
         <hr></hr>
         <div className={classes.ingredients_container}>
           <h2 className={classes.h2}>Ingredients:</h2>
@@ -76,10 +129,25 @@ export default function RecipeDetailSection() {
             {recipe.ingredients.map((item, index) => {
               return (
                 <li key={index + 1}>
-                  {index + 1}. {item.name}
+                  <p>
+                    {index + 1}.{item.name}
+                  </p>
+                  {isEditing && (
+                    <SmallDeleteButton
+                      onClick={() => handleIngredientDeletion(item.id)}
+                    ></SmallDeleteButton>
+                  )}
                 </li>
               );
             })}
+            {isEditing && (
+              <li>
+                <AddIngredient
+                  ingredients={recipe.ingredients}
+                  handleAddIngredient={handleAddIngredient}
+                ></AddIngredient>
+              </li>
+            )}
           </ol>
         </div>
         <div className={classes.instructions_container}>
@@ -93,6 +161,9 @@ export default function RecipeDetailSection() {
             ></textarea>
           )}
         </div>
+        {isEditing && (
+          <SubmitButton onClick={() => handleSubmit()}></SubmitButton>
+        )}
       </section>
       <hr></hr>
       <RatingsSection recipe={recipe} setRecipe={setRecipe}></RatingsSection>

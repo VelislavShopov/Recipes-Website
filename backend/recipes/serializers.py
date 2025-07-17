@@ -35,7 +35,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return publication_date_time.strftime(f"%H:%M, %d{suffix} %B %Y")
 
     ratings = RatingSerializer(many=True, read_only=True)
-    ingredients = IngredientSerializer(many=True, read_only=True)
+    ingredients = IngredientSerializer(many=True)
     user = CustomUserWithProfile(read_only=True)
     avg_stars = SerializerMethodField()
 

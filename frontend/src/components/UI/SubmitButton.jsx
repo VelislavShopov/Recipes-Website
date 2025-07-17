@@ -5,7 +5,7 @@ export default function SubmitButton({ ...props }) {
     <button
       className={classes.Btn}
       {...props}
-      style={{ backgroundColor: "#B0DB9C", width: "7rem" }}
+      style={{ backgroundColor: "#B0DB9C", width: "7rem", justifySelf: "end" }}
     >
       Submit
       <svg

@@ -26,9 +26,9 @@
   border: none;
   margin-bottom: 2rem;
   text-align: start;
-  height: 5rem;
+  height: 4rem;
   width: 80%;
-  font-size: 3rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
@@ -63,6 +63,12 @@
   margin-left: 2rem;
   display: grid;
   gap: 0.5rem;
+}
+
+.ingredients_container li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .instructions_container {

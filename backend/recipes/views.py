@@ -2,7 +2,8 @@ import json
 
 from django.contrib.auth import get_user_model
 from rest_framework import status
-from rest_framework.generics import ListAPIView, get_object_or_404, DestroyAPIView, CreateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, get_object_or_404, DestroyAPIView, CreateAPIView, RetrieveAPIView, \
+    UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -34,6 +35,12 @@ class RetrieveRecipeBySlug(RetrieveAPIView):
     lookup_field = 'slug'
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
+
+
+class UpdateRecipeView(UpdateAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    permission_classes = [IsAuthenticated, ObjectOfUserPermission]
 
 class RecipeListView(ListAPIView):
     serializer_class = RecipeSerializer
@@ -78,14 +85,14 @@ class UserRecipeProfileListView(ListAPIView):
         lookup_value = self.kwargs.get(self.lookup_field)
 
         user = get_object_or_404(UserModel, **{self.lookup_field: lookup_value})
-
         return Recipe.objects.filter(user=user)
 
 
 class IngredientsListView(ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
+    pagination_class = None
 
 class CreateRatingView(CreateAPIView):
     queryset = Rating.objects.all()
@@ -121,3 +128,21 @@ class DestroyRatingView(DestroyAPIView):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
     permission_classes = (ObjectOfUserPermission,)
+
+
+
+class DeleteIngredientFromRecipeView(APIView):
+    permission_classes = (IsAuthenticated,ObjectOfUserPermission)
+    def delete(self,request, *args, **kwargs):
+        recipe = get_object_or_404(Recipe, pk=kwargs['pk'])
+        ingredient = get_object_or_404(Ingredient, pk=kwargs['ingredient_pk'])
+        recipe.ingredients.remove(ingredient)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class AddIngredientToRecipeView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request, *args, **kwargs):
+        recipe = get_object_or_404(Recipe, pk=kwargs['pk'])
+        ingredient = get_object_or_404(Ingredient, pk=kwargs['ingredient_pk'])
+        recipe.ingredients.add(ingredient)
+        return Response(status=status.HTTP_204_NO_CONTENT)
